@@ -44,9 +44,6 @@ public class AFKPoolModules implements ModuleInterface {
 
     @Override
     public void enable() {
-        if(isEnabled()) {
-            return;
-        }
         afkPlayerMoveEvent = new AFKPlayerMoveEvent();
         // Module is enabled, do stuff
         Main.getInstance().getServer().getPluginManager().registerEvents(afkPlayerMoveEvent, Main.getInstance());
@@ -92,9 +89,6 @@ public class AFKPoolModules implements ModuleInterface {
 
     @Override
     public void disable() {
-        if(isEnabled() == false) {
-            return;
-        }
         if(afkPlayerMoveEvent != null)
             HandlerList.unregisterAll(afkPlayerMoveEvent);
         if(player_data_afk_pool != null) {
