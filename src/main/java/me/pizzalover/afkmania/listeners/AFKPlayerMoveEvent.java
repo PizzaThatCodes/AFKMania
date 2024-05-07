@@ -15,9 +15,43 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class AFKPlayerMoveEvent implements Listener {
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+
+        Player player = event.getPlayer();
+        AFKPoolModules afkPoolModules = (AFKPoolModules) Main.getModuleManager().getModule("AFKPool");
+
+        AFKPoolPlayerData playerData = null;
+
+        for(AFKPoolPlayerData tempPlayerData : afkPoolModules.player_data_afk_pool) {
+            if(tempPlayerData.getPlayer().getUniqueId().equals(player.getUniqueId())) {
+                playerData = tempPlayerData;
+                break;
+            }
+        }
+
+        if(playerData == null) {
+            return;
+        }
+
+        playerData.getPlayer().resetTitle();
+
+
+        afkPoolModules.player_data_afk_pool.remove(playerData);
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+
+        Player player = event.getPlayer();
+        checkPlayerRegion(player);
+    }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
@@ -51,7 +85,7 @@ public class AFKPlayerMoveEvent implements Listener {
             }
 
             if(playerData == null) {
-                playerData = new AFKPoolPlayerData(player, 0, true);
+                playerData = new AFKPoolPlayerData(player, 0);
 
                 afkPoolModules.player_data_afk_pool.add(playerData);
             }
@@ -75,7 +109,6 @@ public class AFKPlayerMoveEvent implements Listener {
                 return;
             }
 
-            playerData.setAFK(false);
             if(afkPoolsConfig.getConfig().getBoolean("afk-message.leaving-afk.send-message.enabled"))
                 playerData.getPlayer().sendMessage(utils.translate(afkPoolsConfig.getConfig().getString("afk-message.leaving-afk.send-message.message"))
                         .replace("{prefix}", utils.translate(settingConfig.getConfig().getString("prefix")))

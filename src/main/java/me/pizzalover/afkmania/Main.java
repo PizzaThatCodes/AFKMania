@@ -13,8 +13,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
 
-    private static AFKPoolModules afkPoolModule;
-
     private static Main instance;
     private static TaskScheduler scheduler;
     private static ModuleManager moduleManager;
@@ -72,37 +70,12 @@ public final class Main extends JavaPlugin {
 
 
 
-        AFKPoolModules afkPoolModule = new AFKPoolModules();
-        if(settingConfig.getConfig().getBoolean("modules.afk_pool.enabled")) {
-            getModuleManager().enableModule(afkPoolModule);
-        } else {
-            getModuleManager().disableModule(afkPoolModule);
-        }
+        // Registering the modules
+        getModuleManager().checkConfigModules();
 
-        AFKBlockModules afkBlockModule = new AFKBlockModules();
-        if(settingConfig.getConfig().getBoolean("modules.afk_block.enabled")) {
-            getModuleManager().enableModule(afkBlockModule);
-        } else {
-            getModuleManager().disableModule(afkBlockModule);
-        }
-
-
-
-        getLogger().info("AFKMania has been enabled!");
-
-        getLogger().info("---------------------------------");
-        for(ModuleInterface module : getModuleManager().getAllModules()) {
-            if(module.isEnabled()) {
-                getLogger().info("| [+] " + module.getName() + " |");
-            } else {
-                getLogger().info("| [-] " + module.getName() + " |");
-            }
-        }
-        getLogger().info("---------------------------------");
 
 
         getCommand("afkmania").setExecutor(new afkManiaReload());
-
 
 
         getScheduler().runTaskTimerAsynchronously(() -> {
@@ -115,6 +88,9 @@ public final class Main extends JavaPlugin {
             }
         }, 0, 5L);
 
+
+
+        getLogger().info("AFKMania has been enabled!");
     }
 
     @Override

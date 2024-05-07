@@ -1,36 +1,36 @@
-package me.pizzalover.afkmania.player_info.afk_pools;
+package me.pizzalover.afkmania.player_info.afk_block;
 
 import org.bukkit.entity.Player;
 
-public class AFKPoolPlayerData {
+public class AFKBlockPlayerData {
 
     Player player;
-    int afk_pool_time;
+    int afk_block_time;
 
     /**
      * Constructor for the player data afk pool
      * @param player the player
-     * @param afk_pool_time the afk pool time of the player
+     * @param afk_block_time the afk pool time of the player
      */
-    public AFKPoolPlayerData(Player player, int afk_pool_time) {
+    public AFKBlockPlayerData(Player player, int afk_block_time) {
         this.player = player;
-        this.afk_pool_time = afk_pool_time;
+        this.afk_block_time = afk_block_time;
     }
 
     /**
      * Get the afk pool time of the player
      * @return the afk pool time of the player
      */
-    public int getAFKPoolTime() {
-        return afk_pool_time;
+    public int getAFKBlockTime() {
+        return afk_block_time;
     }
 
     /**
      * Set the afk pool time of the player
-     * @param afk_pool_time the afk pool time of the player
+     * @param afk_block_time the afk pool time of the player
      */
-    public void setAFKPoolTime(int afk_pool_time) {
-        this.afk_pool_time = afk_pool_time;
+    public void setAFKBlockTime(int afk_block_time) {
+        this.afk_block_time = afk_block_time;
     }
 
     /**

@@ -1,0 +1,27 @@
+block_location:
+  x: 0
+  y: 0
+  z: 0
+  world: world
+reward_interval_seconds: 5
+afk-message:
+  inventory-collect:
+    title: "&6AFK Pools"
+    subtitle: "&aMining Away..."
+  inventory-full:
+    title: "&6AFK Pools"
+    subtitle: "&cYour inventory is full"
+
+block_settings:
+  break_speed: 1 # Time in seconds to break each block
+  hologram:
+    - "Line 1"
+    - "Line 2"
+    - "Line 3"
+
+gui:
+  gui_name: ""
+
+blocks:
+  - DIAMOND_ORE
+  - EMERALD_ORE

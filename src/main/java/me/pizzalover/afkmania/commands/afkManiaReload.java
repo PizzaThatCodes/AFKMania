@@ -1,5 +1,6 @@
 package me.pizzalover.afkmania.commands;
 
+import me.pizzalover.afkmania.Main;
 import me.pizzalover.afkmania.utils.config.messageConfig;
 import me.pizzalover.afkmania.utils.config.modules.afkPoolsConfig;
 import me.pizzalover.afkmania.utils.config.settingConfig;
@@ -28,6 +29,8 @@ public class afkManiaReload implements CommandExecutor {
                     );
                     afkPoolsConfig.reloadConfig();
                     settingConfig.reloadConfig();
+
+                    Main.getModuleManager().checkConfigModules();
 
                 } else {
                     sender.sendMessage(utils.translate(
