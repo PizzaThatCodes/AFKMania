@@ -7,6 +7,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import me.pizzalover.afkmania.Main;
 import me.pizzalover.afkmania.modules.AFKPoolModules;
+import me.pizzalover.afkmania.modules.manager.ModuleManager;
 import me.pizzalover.afkmania.player_info.afk_pools.AFKPoolPlayerData;
 import me.pizzalover.afkmania.utils.config.modules.afkPoolsConfig;
 import me.pizzalover.afkmania.utils.config.settingConfig;

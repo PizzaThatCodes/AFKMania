@@ -35,6 +35,8 @@ public class AFKPoolModules implements ModuleInterface {
         return "AFKPool";
     }
 
+    AFKPlayerMoveEvent afkPlayerMoveEvent;
+
 
     public ArrayList<AFKPoolPlayerData> player_data_afk_pool;
     public MyScheduledTask afkTimerTask;
@@ -45,8 +47,9 @@ public class AFKPoolModules implements ModuleInterface {
         if(!isEnabled()) {
             return;
         }
+        afkPlayerMoveEvent = new AFKPlayerMoveEvent();
         // Module is enabled, do stuff
-        Main.getInstance().getServer().getPluginManager().registerEvents(new AFKPlayerMoveEvent(), Main.getInstance());
+        Main.getInstance().getServer().getPluginManager().registerEvents(afkPlayerMoveEvent, Main.getInstance());
         player_data_afk_pool = new ArrayList<>();
 
 
@@ -92,11 +95,15 @@ public class AFKPoolModules implements ModuleInterface {
         if(isEnabled()) {
             return;
         }
-        HandlerList.unregisterAll(new AFKPlayerMoveEvent());
+        if(afkPlayerMoveEvent != null)
+            HandlerList.unregisterAll(afkPlayerMoveEvent);
         if(player_data_afk_pool != null) {
             player_data_afk_pool.clear();
             player_data_afk_pool = null;
         }
+
+        afkTimerTask.cancel();
+        afkMessageTask.cancel();
 
 
     }

@@ -16,6 +16,11 @@ public class ModuleManager {
      * @param module the module to enable
      */
     public void enableModule(ModuleInterface module){
+        if(modules.contains(module)){
+            module.enable();
+            module.setEnabled(true);
+            return;
+        }
         modules.add(module);
         module.setEnabled(true);
         module.enable();
@@ -78,6 +83,11 @@ public class ModuleManager {
      */
     public void checkConfigModules() {
 
+        for(ModuleInterface module : getAllModules()) {
+            if(module.isEnabled()) {
+                module.disable();
+            }
+        }
         if(getAllModules().size() > 0)
             getAllModules().clear();
 
