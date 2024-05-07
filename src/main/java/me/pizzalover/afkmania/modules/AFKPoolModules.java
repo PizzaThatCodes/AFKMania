@@ -102,8 +102,10 @@ public class AFKPoolModules implements ModuleInterface {
             player_data_afk_pool = null;
         }
 
-        afkTimerTask.cancel();
-        afkMessageTask.cancel();
+        if(afkTimerTask != null)
+            afkTimerTask.cancel();
+        if(afkMessageTask != null)
+            afkMessageTask.cancel();
 
 
     }
