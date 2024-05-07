@@ -44,7 +44,7 @@ public class AFKPoolModules implements ModuleInterface {
 
     @Override
     public void enable() {
-        if(!isEnabled()) {
+        if(isEnabled()) {
             return;
         }
         afkPlayerMoveEvent = new AFKPlayerMoveEvent();
@@ -92,7 +92,7 @@ public class AFKPoolModules implements ModuleInterface {
 
     @Override
     public void disable() {
-        if(isEnabled()) {
+        if(isEnabled() == false) {
             return;
         }
         if(afkPlayerMoveEvent != null)
