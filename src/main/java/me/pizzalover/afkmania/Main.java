@@ -7,6 +7,7 @@ import me.pizzalover.afkmania.modules.AFKBlockModules;
 import me.pizzalover.afkmania.modules.AFKPoolModules;
 import me.pizzalover.afkmania.modules.manager.ModuleInterface;
 import me.pizzalover.afkmania.modules.manager.ModuleManager;
+import me.pizzalover.afkmania.utils.config.messageConfig;
 import me.pizzalover.afkmania.utils.config.modules.afkPoolsConfig;
 import me.pizzalover.afkmania.utils.config.settingConfig;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -55,15 +56,23 @@ public final class Main extends JavaPlugin {
             saveResource("modules/afk_pool.yml", false);
         }
 
+        if(!messageConfig.getConfigFile().exists()) {
+            saveResource("messages.yml", false);
+        }
+
         // Updating the config files
         settingConfig.updateConfig();
         afkPoolsConfig.updateConfig();
+        messageConfig.updateConfig();
 
         settingConfig.saveConfig();
         settingConfig.reloadConfig();
 
         afkPoolsConfig.saveConfig();
         afkPoolsConfig.reloadConfig();
+
+        messageConfig.saveConfig();
+        messageConfig.reloadConfig();
 
 
 

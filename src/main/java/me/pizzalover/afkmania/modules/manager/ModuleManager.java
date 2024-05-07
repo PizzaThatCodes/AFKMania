@@ -77,6 +77,10 @@ public class ModuleManager {
      * Check the modules in the config to see if they are enabled or disabled, and to enable or disable them.
      */
     public void checkConfigModules() {
+
+        if(getAllModules().size() > 0)
+            getAllModules().clear();
+
         AFKPoolModules afkPoolModule = new AFKPoolModules();
         if(settingConfig.getConfig().getBoolean("modules.afk_pool.enabled")) {
             enableModule(afkPoolModule);

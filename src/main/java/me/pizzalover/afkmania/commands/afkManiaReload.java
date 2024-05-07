@@ -9,6 +9,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import java.util.Objects;
+
 public class afkManiaReload implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
@@ -24,8 +26,8 @@ public class afkManiaReload implements CommandExecutor {
                 if(sender.hasPermission("afkmania.reload")) {
                     // Reload the plugin
                     sender.sendMessage(utils.translate(
-                            messageConfig.getConfig().getString("commands.reload")
-                                    .replace("%prefix%", settingConfig.getConfig().getString("prefix")))
+                            Objects.requireNonNull(messageConfig.getConfig().getString("commands.reload"))
+                                    .replace("%prefix%", Objects.requireNonNull(settingConfig.getConfig().getString("prefix"))))
                     );
                     afkPoolsConfig.reloadConfig();
                     settingConfig.reloadConfig();
@@ -34,8 +36,8 @@ public class afkManiaReload implements CommandExecutor {
 
                 } else {
                     sender.sendMessage(utils.translate(
-                            messageConfig.getConfig().getString("commands.no_permission")
-                                    .replace("%prefix%", settingConfig.getConfig().getString("prefix")))
+                            Objects.requireNonNull(messageConfig.getConfig().getString("commands.no_permission"))
+                                    .replace("%prefix%", Objects.requireNonNull(settingConfig.getConfig().getString("prefix"))))
                     );
                 }
                 return true;
@@ -47,8 +49,8 @@ public class afkManiaReload implements CommandExecutor {
             }
             default: {
                 sender.sendMessage(utils.translate(
-                        messageConfig.getConfig().getString("commands.unknown_command")
-                                .replace("%prefix%", settingConfig.getConfig().getString("prefix")))
+                        Objects.requireNonNull(messageConfig.getConfig().getString("commands.unknown_command"))
+                                .replace("%prefix%", Objects.requireNonNull(settingConfig.getConfig().getString("prefix"))))
                 );
                 return true;
             }
