@@ -1,0 +1,4 @@
+commands:
+  reload: '{prefix} &aReloaded the plugin'
+  no_permission: '{prefix} &cYou do not have permission to do that'
+  unknown_command: '{prefix} &cUnknown command. Type &e/afkmania help &rfor help'

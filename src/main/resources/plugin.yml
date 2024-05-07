@@ -1,0 +1,17 @@
+name: AFKMania
+version: '${project.version}'
+main: me.pizzalover.afkmania.Main
+api-version: '1.20'
+depend:
+  - WorldGuard
+
+commands:
+  afkmania:
+    description: Main command for AFKMania
+    usage: /<command> [reload]
+    permission: afkmania.reload
+
+permissions:
+  afkmania.reload:
+    description: Allows the player to reload the plugin
+    default: op

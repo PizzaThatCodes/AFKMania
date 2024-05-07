@@ -1,0 +1,6 @@
+prefix: "&7[&eAFK&cMania&7]&r "
+modules:
+  afk_pool:
+    enabled: true
+  afk_block:
+    enabled: true
