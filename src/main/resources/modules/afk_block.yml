@@ -21,6 +21,47 @@ block_settings:
 
 gui:
   gui_name: ""
+  slot_amount: 27
+  slots:
+    0:
+      # the item
+      item: "POTATO"
+      # item display name
+      name: "&b&lPotato"
+      # item lore
+      lore:
+        - "Lore one"
+        - "Lore two"
+      # left click commands
+      left_click_commands:
+        - "[console] give %player_username% diamond 1"
+      # right click commands
+      right_click_commands:
+        - "[console] give %player_username% dirt 1"
+
+upgrades:
+  fortune:
+    name: "" # How it displays in the GUI
+    slot: 0 # What slot position it should appear
+    enabled: true
+    item: DIAMOND
+    lore:
+      - "line 1"
+      - "line 2"
+    base_cost: 100
+    incremental_cost:
+    max_level:
+  keyfinder:
+    name: "" # How it displays in the GUI
+    slot: 0 # What slot position it should appear
+    enabled: false
+    item: DIAMOND
+    lore:
+      - "line 1"
+      - "line 2"
+    base_cost: 100
+    incremental_cost:
+    max_level:
 
 blocks:
   - DIAMOND_ORE

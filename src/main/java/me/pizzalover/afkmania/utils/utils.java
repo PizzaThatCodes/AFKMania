@@ -4,6 +4,7 @@ import me.pizzalover.afkmania.Main;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 
 import java.lang.reflect.Method;
 import java.util.regex.Matcher;
@@ -51,6 +52,20 @@ public class utils {
         world.setGameRule(GameRule.SEND_COMMAND_FEEDBACK, commandFeedback);
         world.setGameRule(GameRule.COMMAND_BLOCK_OUTPUT, commandBlock);
         entity.remove();
+    }
+
+    /**
+     * Add placeholders to a string if it's using PlaceHolderAPI
+     * @param player the player
+     * @param text the text
+     * @return the text with placeholders
+     */
+    public static String addPlaceholderToText(Player player, String text) {
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            return me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, text);
+        } else {
+            return text;
+        }
     }
 
 }
