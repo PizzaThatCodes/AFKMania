@@ -87,12 +87,12 @@
             <version>7.0.9</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.edwardbelt.edprison</groupId>
-            <artifactId>EdPrison</artifactId>
-            <scope>system</scope>
-            <version>5.5</version>
-            <systemPath>A:/My Stuff/Projects/Spigot Plugins/lib/EdPrison-5.5-obf_30.jar</systemPath>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.edwardbelt.edprison</groupId>-->
+<!--            <artifactId>EdPrison</artifactId>-->
+<!--            <scope>system</scope>-->
+<!--            <version>5.5</version>-->
+<!--            <systemPath>A:/My Stuff/Projects/Spigot Plugins/lib/EdPrison-5.5-obf_30.jar</systemPath>-->
+<!--        </dependency>-->
     </dependencies>
 </project>

@@ -136,7 +136,7 @@ public class AFKPoolModules implements ModuleInterface {
             currentWeight += reward.chance;
             if (randomIndex < currentWeight) {
                 String command = reward.command.replace("%player%", player.getName());
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                utils.runConsoleCommand(command, player.getWorld());
                 break;
             }
         }
