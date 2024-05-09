@@ -104,6 +104,20 @@ public class AFKPoolModules implements ModuleInterface {
 
     }
 
+    @Override
+    public void onEnable() {
+        if(!afkPoolsConfig.getConfigFile().exists()) {
+            Main.getInstance().saveResource("modules/afk_pool.yml", false);
+        }
+
+        afkPoolsConfig.saveConfig();
+        afkPoolsConfig.reloadConfig();
+    }
+
+    @Override
+    public void onDisable() {
+
+    }
 
 
     private void rewardPlayer(Player player) {

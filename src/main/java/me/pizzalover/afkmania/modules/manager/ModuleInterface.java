@@ -29,4 +29,14 @@ public interface ModuleInterface {
      * Function when the module is disabled
      */
     void disable();
+
+    /**
+     * Function to call on the onEnable event, doesn't matter if it's enabled or not
+     */
+    void onEnable();
+
+    /**
+     * Function to call on the onDisable event, doesn't matter if it's enabled or not
+     */
+    void onDisable();
 }

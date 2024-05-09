@@ -8,6 +8,7 @@ import me.pizzalover.afkmania.modules.AFKPoolModules;
 import me.pizzalover.afkmania.modules.manager.ModuleInterface;
 import me.pizzalover.afkmania.modules.manager.ModuleManager;
 import me.pizzalover.afkmania.utils.config.messageConfig;
+import me.pizzalover.afkmania.utils.config.modules.afkBlockConfig;
 import me.pizzalover.afkmania.utils.config.modules.afkPoolsConfig;
 import me.pizzalover.afkmania.utils.config.settingConfig;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -48,12 +49,12 @@ public final class Main extends JavaPlugin {
         this.moduleManager = new ModuleManager();
         scheduler = UniversalScheduler.getScheduler(this);
 
-        if(!settingConfig.getConfigFile().exists()) {
-            saveResource("config.yml", false);
+        for(ModuleInterface module : getModuleManager().getAllModules()) {
+            module.onEnable();
         }
 
-        if(!afkPoolsConfig.getConfigFile().exists()) {
-            saveResource("modules/afk_pool.yml", false);
+        if(!settingConfig.getConfigFile().exists()) {
+            saveResource("config.yml", false);
         }
 
         if(!messageConfig.getConfigFile().exists()) {
@@ -62,14 +63,10 @@ public final class Main extends JavaPlugin {
 
         // Updating the config files
         settingConfig.updateConfig();
-        afkPoolsConfig.updateConfig();
         messageConfig.updateConfig();
 
         settingConfig.saveConfig();
         settingConfig.reloadConfig();
-
-        afkPoolsConfig.saveConfig();
-        afkPoolsConfig.reloadConfig();
 
         messageConfig.saveConfig();
         messageConfig.reloadConfig();
