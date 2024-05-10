@@ -77,9 +77,6 @@ public final class Main extends JavaPlugin {
 
 
 
-
-
-
         getCommand("afkmania").setExecutor(new afkManiaReload());
 
 
