@@ -1,4 +1,9 @@
-region_name: "afk_pool"
+afk_pools:
+  afk_pool:
+    region_name: "afk_pool"
+    rewards:
+      - "Diamond"
+      - "Emerald"
 reward_interval_seconds: 5
 afk-message:
   inventory-collect:
