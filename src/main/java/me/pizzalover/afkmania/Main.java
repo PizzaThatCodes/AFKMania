@@ -49,6 +49,9 @@ public final class Main extends JavaPlugin {
         this.moduleManager = new ModuleManager();
         scheduler = UniversalScheduler.getScheduler(this);
 
+        // Registering the modules
+        getModuleManager().checkConfigModules();
+
         for(ModuleInterface module : getModuleManager().getAllModules()) {
             module.onEnable();
         }
@@ -74,10 +77,6 @@ public final class Main extends JavaPlugin {
 
 
 
-
-
-        // Registering the modules
-        getModuleManager().checkConfigModules();
 
 
 

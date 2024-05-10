@@ -110,6 +110,8 @@ public class AFKPoolModules implements ModuleInterface {
             Main.getInstance().saveResource("modules/afk_pool.yml", false);
         }
 
+        afkPoolsConfig.updateConfig();
+
         afkPoolsConfig.saveConfig();
         afkPoolsConfig.reloadConfig();
     }
