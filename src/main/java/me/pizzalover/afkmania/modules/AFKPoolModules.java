@@ -56,7 +56,7 @@ public class AFKPoolModules implements ModuleInterface {
                 playerData.setAFKPoolTime(playerData.getAFKPoolTime() + 1);
 
                 if(playerData.getAFKPoolTime() % afkPoolsConfig.getConfig().getInt("reward_interval_seconds") == 0 && playerData.getPlayer().getInventory().firstEmpty() != -1) {
-                    rewardPlayer(playerData.getPlayer());
+                    rewardPlayer(playerData.getPlayer(), playerData.getAFKPoolRegion());
                 }
 
             }
@@ -122,7 +122,15 @@ public class AFKPoolModules implements ModuleInterface {
     }
 
 
-    private void rewardPlayer(Player player) {
+    private void rewardPlayer(Player player, String region) {
+        String region_name = "";
+        for(String regions : afkPoolsConfig.getConfig().getConfigurationSection("afk_pools").getKeys(false)) {
+            if(afkPoolsConfig.getConfig().getString("afk_pools." + regions + ".region_name").equalsIgnoreCase(region)) {
+                region_name = regions;
+                break;
+            }
+        }
+        List<String> rewards_to_get = afkPoolsConfig.getConfig().getStringList("afk_pools." + region_name + ".rewards");
         ConfigurationSection rewardsSection = afkPoolsConfig.getConfig().getConfigurationSection("rewards");
         if (rewardsSection == null) {
             Main.getInstance().getLogger().severe("Rewards section is missing in the config file.");
@@ -133,6 +141,7 @@ public class AFKPoolModules implements ModuleInterface {
         int totalWeight = 0;
 
         for (String key : rewardsSection.getKeys(false)) {
+            if(!rewards_to_get.contains(key)) continue;
             String command = rewardsSection.getString(key + ".command");
             int chance = rewardsSection.getInt(key + ".chance");
             rewards.add(new Reward(command, chance));

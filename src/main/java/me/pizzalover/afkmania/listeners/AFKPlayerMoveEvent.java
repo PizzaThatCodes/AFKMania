@@ -20,6 +20,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.ArrayList;
+
 public class AFKPlayerMoveEvent implements Listener {
 
     @EventHandler
@@ -71,62 +73,63 @@ public class AFKPlayerMoveEvent implements Listener {
             return;
         }
 
-        ProtectedRegion region = regions.getRegion(afkPoolsConfig.getConfig().getString("region_name"));
-        if (region != null && region.contains(BukkitAdapter.adapt(player.getLocation()).getBlockX(), BukkitAdapter.adapt(player.getLocation()).getBlockY(), BukkitAdapter.adapt(player.getLocation()).getBlockZ())) {
-            // Player is in region
-            AFKPoolModules afkPoolModules = (AFKPoolModules) Main.getModuleManager().getModule("AFKPool");
+        ArrayList<String> region_list = new ArrayList<>();
+        for (String afk_pool_region_list : afkPoolsConfig.getConfig().getConfigurationSection("afk_pools").getKeys(false)) {
+            region_list.add(afkPoolsConfig.getConfig().getString("afk_pools." + afk_pool_region_list + ".region_name"));
+//            player.sendMessage(afk_pool_region_list);
+        }
 
-            AFKPoolPlayerData playerData = null;
 
-            for(AFKPoolPlayerData tempPlayerData : afkPoolModules.player_data_afk_pool) {
-                if(tempPlayerData.getPlayer().getUniqueId().equals(player.getUniqueId())) {
-                    playerData = tempPlayerData;
-                    break;
+        AFKPoolModules afkPoolModules = (AFKPoolModules) Main.getModuleManager().getModule("AFKPool");
+
+        AFKPoolPlayerData playerData = null;
+
+
+        for (AFKPoolPlayerData tempPlayerData : afkPoolModules.player_data_afk_pool) {
+            if (tempPlayerData.getPlayer().getUniqueId().equals(player.getUniqueId())) {
+                playerData = tempPlayerData;
+                break;
+            }
+        }
+
+        for (String region_name : region_list) {
+            ProtectedRegion region = regions.getRegion(region_name);
+            if (region != null && region.contains(BukkitAdapter.adapt(player.getLocation()).getBlockX(), BukkitAdapter.adapt(player.getLocation()).getBlockY(), BukkitAdapter.adapt(player.getLocation()).getBlockZ())) {
+                // Player is in region
+
+                if (playerData == null) {
+                    playerData = new AFKPoolPlayerData(player, 0, region_name);
+
+                    afkPoolModules.player_data_afk_pool.add(playerData);
                 }
-            }
 
-            if(playerData == null) {
-                playerData = new AFKPoolPlayerData(player, 0);
-
-                afkPoolModules.player_data_afk_pool.add(playerData);
-            }
-
-
-
-        } else {
-            // Player isn't in region
-            AFKPoolModules afkPoolModules = (AFKPoolModules) Main.getModuleManager().getModule("AFKPool");
-
-            AFKPoolPlayerData playerData = null;
-
-            for(AFKPoolPlayerData tempPlayerData : afkPoolModules.player_data_afk_pool) {
-                if(tempPlayerData.getPlayer().getUniqueId().equals(player.getUniqueId())) {
-                    playerData = tempPlayerData;
-                    break;
-                }
-            }
-
-            if(playerData == null) {
                 return;
             }
 
-            if(afkPoolsConfig.getConfig().getBoolean("afk-message.leaving-afk.send-message.enabled"))
-                playerData.getPlayer().sendMessage(utils.translate(afkPoolsConfig.getConfig().getString("afk-message.leaving-afk.send-message.message"))
-                        .replace("{prefix}", utils.translate(settingConfig.getConfig().getString("prefix")))
-                        .replace("{seconds}", playerData.getAFKPoolTime() + "")
-                );
-
-            playerData.getPlayer().resetTitle();
-            playerData.getPlayer().sendTitle(utils.translate(afkPoolsConfig.getConfig().getString("afk-message.leaving-afk.title")),
-                    utils.translate(afkPoolsConfig.getConfig().getString("afk-message.leaving-afk.subtitle")),
-                    0,
-                    10,
-                    5);
-
-
-            afkPoolModules.player_data_afk_pool.remove(playerData);
-
         }
+
+        if (playerData == null) {
+            return;
+        }
+
+        if (afkPoolsConfig.getConfig().getBoolean("afk-message.leaving-afk.send-message.enabled"))
+            playerData.getPlayer().sendMessage(utils.translate(afkPoolsConfig.getConfig().getString("afk-message.leaving-afk.send-message.message"))
+                    .replace("{prefix}", utils.translate(settingConfig.getConfig().getString("prefix")))
+                    .replace("{seconds}", playerData.getAFKPoolTime() + "")
+            );
+
+        playerData.getPlayer().resetTitle();
+        playerData.getPlayer().sendTitle(utils.translate(afkPoolsConfig.getConfig().getString("afk-message.leaving-afk.title")),
+                utils.translate(afkPoolsConfig.getConfig().getString("afk-message.leaving-afk.subtitle")),
+                0,
+                10,
+                5);
+
+
+        afkPoolModules.player_data_afk_pool.remove(playerData);
+
+
     }
+
 
 }

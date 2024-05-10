@@ -2,3 +2,11 @@ commands:
   reload: '{prefix} &aReloaded the plugin'
   no_permission: '{prefix} &cYou do not have permission to do that'
   unknown_command: '{prefix} &cUnknown command. Type &e/afkmania help &rfor help'
+
+afk_block:
+  gui:
+    error_messages:
+      slot_amount_not_divisible_by_9: '{prefix} &cSlot amount must be divisible by 9'
+      slot_amount_greater_than_54: '{prefix} &cSlot amount must be less than or equal to 54'
+      slot_amount_less_than_9: '{prefix} &cSlot amount must be greater than or equal to 9'
+      invalid_slot_number: '{prefix} &cInvalid slot number'
