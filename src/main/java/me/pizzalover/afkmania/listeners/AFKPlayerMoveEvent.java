@@ -73,7 +73,7 @@ public class AFKPlayerMoveEvent implements Listener {
 
         for(String afk_pool_region_list : afkPoolsConfig.getConfig().getConfigurationSection("afk_pools").getKeys(false)) {
             String region_name = afkPoolsConfig.getConfig().getString("afk_pools." + afk_pool_region_list + ".region_name");
-
+            player.sendMessage(region_name);
 
             AFKPoolModules afkPoolModules = (AFKPoolModules) Main.getModuleManager().getModule("AFKPool");
 
@@ -97,7 +97,7 @@ public class AFKPlayerMoveEvent implements Listener {
                 }
 
 
-
+                break;
             } else {
                 // Player isn't in region
 
@@ -122,7 +122,6 @@ public class AFKPlayerMoveEvent implements Listener {
                 afkPoolModules.player_data_afk_pool.remove(playerData);
 
             }
-
 
         }
 
