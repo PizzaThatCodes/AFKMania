@@ -81,7 +81,7 @@ public class afkPoolsConfig {
 
         // Gets all the keys inside the internal file and iterates through all of it's key pairs
         for (String string : internalLangConfig.getKeys(true)) {
-            if(string.startsWith("rewards")) continue;
+            if(string.startsWith("rewards") || string.startsWith("afk_pools")) continue;
             // Checks if the external file contains the key already.
             if (!externalYamlConfig.contains(string)) {
                 // If it doesn't contain the key, we set the key based off what was found inside the plugin jar
