@@ -71,18 +71,20 @@ public class AFKPlayerMoveEvent implements Listener {
             return;
         }
 
+        region_list:
         for(String afk_pool_region_list : afkPoolsConfig.getConfig().getConfigurationSection("afk_pools").getKeys(false)) {
             String region_name = afkPoolsConfig.getConfig().getString("afk_pools." + afk_pool_region_list + ".region_name");
-            player.sendMessage(region_name);
+//            player.sendMessage(region_name);
 
             AFKPoolModules afkPoolModules = (AFKPoolModules) Main.getModuleManager().getModule("AFKPool");
 
             AFKPoolPlayerData playerData = null;
 
+            temp_player_data:
             for(AFKPoolPlayerData tempPlayerData : afkPoolModules.player_data_afk_pool) {
                 if(tempPlayerData.getPlayer().getUniqueId().equals(player.getUniqueId())) {
                     playerData = tempPlayerData;
-                    break;
+                    break temp_player_data;
                 }
             }
 
@@ -102,7 +104,7 @@ public class AFKPlayerMoveEvent implements Listener {
                 // Player isn't in region
 
                 if(playerData == null) {
-                    return;
+                    continue region_list;
                 }
 
                 if(afkPoolsConfig.getConfig().getBoolean("afk-message.leaving-afk.send-message.enabled"))
