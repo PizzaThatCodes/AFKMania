@@ -2,12 +2,11 @@ package me.pizzalover.afkmania.modules;
 
 import com.github.Anon8281.universalScheduler.scheduling.tasks.MyScheduledTask;
 import me.pizzalover.afkmania.Main;
-import me.pizzalover.afkmania.listeners.AFKPlayerMoveEvent;
+import me.pizzalover.afkmania.listeners.AFKPoolPlayerMoveEvent;
 import me.pizzalover.afkmania.modules.manager.ModuleInterface;
 import me.pizzalover.afkmania.player_info.afk_pools.AFKPoolPlayerData;
 import me.pizzalover.afkmania.utils.config.modules.afkPoolsConfig;
 import me.pizzalover.afkmania.utils.utils;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -35,17 +34,27 @@ public class AFKPoolModules implements ModuleInterface {
         return "AFKPool";
     }
 
-    AFKPlayerMoveEvent afkPlayerMoveEvent;
+    AFKPoolPlayerMoveEvent afkPlayerMoveEvent;
 
 
     public ArrayList<AFKPoolPlayerData> player_data_afk_pool;
     public MyScheduledTask afkTimerTask;
     public MyScheduledTask afkMessageTask;
 
+
     @Override
     public void enable() {
-        afkPlayerMoveEvent = new AFKPlayerMoveEvent();
-        // Module is enabled, do stuff
+
+        if(!afkPoolsConfig.getConfigFile().exists()) {
+            Main.getInstance().saveResource("modules/afk_pool.yml", false);
+        }
+
+        afkPoolsConfig.updateConfig();
+
+        afkPoolsConfig.saveConfig();
+        afkPoolsConfig.reloadConfig();
+
+        afkPlayerMoveEvent = new AFKPoolPlayerMoveEvent();
         Main.getInstance().getServer().getPluginManager().registerEvents(afkPlayerMoveEvent, Main.getInstance());
         player_data_afk_pool = new ArrayList<>();
 
@@ -106,14 +115,8 @@ public class AFKPoolModules implements ModuleInterface {
 
     @Override
     public void onEnable() {
-        if(!afkPoolsConfig.getConfigFile().exists()) {
-            Main.getInstance().saveResource("modules/afk_pool.yml", false);
-        }
 
-        afkPoolsConfig.updateConfig();
 
-        afkPoolsConfig.saveConfig();
-        afkPoolsConfig.reloadConfig();
     }
 
     @Override
@@ -122,6 +125,11 @@ public class AFKPoolModules implements ModuleInterface {
     }
 
 
+    /**
+     * Reward the player with a random reward from the config file
+     * @param player the player to reward
+     * @param region the region of the afk pool
+     */
     private void rewardPlayer(Player player, String region) {
         String region_name = "";
         for(String regions : afkPoolsConfig.getConfig().getConfigurationSection("afk_pools").getKeys(false)) {

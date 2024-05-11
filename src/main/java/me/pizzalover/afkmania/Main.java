@@ -80,17 +80,6 @@ public final class Main extends JavaPlugin {
         getCommand("afkmania").setExecutor(new afkManiaReload());
 
 
-        getScheduler().runTaskTimerAsynchronously(() -> {
-            if(!getModuleManager().isModuleEnabled("AFKPool")) {
-                AFKPoolModules afkPoolModules = (AFKPoolModules) getModuleManager().getModule("AFKPool");
-                if(afkPoolModules.afkTimerTask != null && afkPoolModules.afkMessageTask != null) {
-                    afkPoolModules.afkTimerTask.cancel();
-                    afkPoolModules.afkMessageTask.cancel();
-                }
-            }
-        }, 0, 5L);
-
-
 
         getLogger().info("AFKMania has been enabled!");
     }

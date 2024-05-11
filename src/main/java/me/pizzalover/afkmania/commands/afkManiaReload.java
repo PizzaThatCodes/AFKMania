@@ -29,7 +29,7 @@ public class afkManiaReload implements CommandExecutor {
                             Objects.requireNonNull(messageConfig.getConfig().getString("commands.reload"))
                                     .replace("%prefix%", Objects.requireNonNull(settingConfig.getConfig().getString("prefix"))))
                     );
-                    afkPoolsConfig.reloadConfig();
+                    messageConfig.reloadConfig();
                     settingConfig.reloadConfig();
 
                     Main.getModuleManager().checkConfigModules();
