@@ -54,6 +54,13 @@ public class AFKPoolModules implements ModuleInterface {
         afkPoolsConfig.saveConfig();
         afkPoolsConfig.reloadConfig();
 
+        if(Main.getInstance().getServer().getPluginManager().getPlugin("WorldGuard") == null) {
+            Main.getInstance().getLogger().severe("WorldGuard is not installed! Disabling AFKPool module...");
+            Main.getModuleManager().disableModule(this);
+            return;
+        }
+
+
         afkPlayerMoveEvent = new AFKPoolPlayerMoveEvent();
         Main.getInstance().getServer().getPluginManager().registerEvents(afkPlayerMoveEvent, Main.getInstance());
         player_data_afk_pool = new ArrayList<>();

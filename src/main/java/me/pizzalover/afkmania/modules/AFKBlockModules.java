@@ -1,9 +1,5 @@
 package me.pizzalover.afkmania.modules;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.PacketContainer;
 import com.cryptomorin.xseries.XMaterial;
 import com.github.Anon8281.universalScheduler.scheduling.tasks.MyScheduledTask;
 import eu.decentsoftware.holograms.api.DHAPI;
@@ -12,20 +8,13 @@ import me.pizzalover.afkmania.Main;
 import me.pizzalover.afkmania.listeners.AFKBlockPlayerInteract;
 import me.pizzalover.afkmania.modules.manager.ModuleInterface;
 import me.pizzalover.afkmania.player_info.afk_block.AFKBlockPlayerData;
-import me.pizzalover.afkmania.player_info.afk_pools.AFKPoolPlayerData;
 import me.pizzalover.afkmania.utils.config.modules.afkBlockConfig;
-import me.pizzalover.afkmania.utils.config.modules.afkPoolsConfig;
 import me.pizzalover.afkmania.utils.utils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.event.HandlerList;
-import org.bukkit.inventory.ItemStack;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -73,12 +62,6 @@ public class AFKBlockModules implements ModuleInterface {
         // Check if DecentHolograms is installed
         if(Main.getInstance().getServer().getPluginManager().getPlugin("DecentHolograms") == null) {
             Main.getInstance().getLogger().severe("DecentHolograms is not installed! Disabling AFKBlock module...");
-            Main.getModuleManager().disableModule(this);
-            return;
-        }
-
-        if(Main.getInstance().getServer().getPluginManager().getPlugin("ProtocolLib") == null) {
-            Main.getInstance().getLogger().severe("ProtocolLib is not installed! Disabling AFKBlock module...");
             Main.getModuleManager().disableModule(this);
             return;
         }
@@ -138,16 +121,7 @@ public class AFKBlockModules implements ModuleInterface {
         afkBlockTask = Main.getScheduler().runTaskTimerAsynchronously(() -> {
             for(AFKBlockPlayerData playerData : player_data_afk_block) {
                 playerData.setAFKBlockTime(playerData.getAFKBlockTime() + 1);
-//                PacketContainer fakeExplosion = ProtocolLibrary.getProtocolManager().
-//                        createPacket(PacketType.Play.Client.BLOCK_PLACE);
-//
-//                fakeExplosion.getDoubles().
-//                        write(0, playerData.getPlayer().getLocation().getX()).
-//                        write(1, playerData.getPlayer().getLocation().getY()).
-//                        write(2, playerData.getPlayer().getLocation().getZ());
-//                fakeExplosion.getFloat().write(0, 3.0F);
-//
-//                ProtocolLibrary.getProtocolManager().sendServerPacket(playerData.getPlayer(), fakeExplosion);
+
                 BlockState blockstate = getBlockLocation().getBlock().getState().copy();
 
                 ArrayList<Material> materialList = new ArrayList<>();
