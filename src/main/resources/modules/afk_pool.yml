@@ -17,7 +17,7 @@ afk-message:
     subtitle: "&cYou are no longer AFK"
     send-message:
       enabled: true
-      message: "{prefix} You are no longer in the AFK pool region. You were in the region for {seconds} seconds."
+      message: "%prefix% You are no longer in the AFK pool region. You were in the region for {seconds} seconds."
 rewards:
   Diamond:
     command: "give %player% minecraft:diamond 1"

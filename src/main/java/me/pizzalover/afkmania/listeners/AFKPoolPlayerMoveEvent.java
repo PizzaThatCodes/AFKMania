@@ -7,7 +7,6 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import me.pizzalover.afkmania.Main;
 import me.pizzalover.afkmania.modules.AFKPoolModules;
-import me.pizzalover.afkmania.modules.manager.ModuleManager;
 import me.pizzalover.afkmania.player_info.afk_pools.AFKPoolPlayerData;
 import me.pizzalover.afkmania.utils.config.modules.afkPoolsConfig;
 import me.pizzalover.afkmania.utils.config.settingConfig;
@@ -22,7 +21,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.ArrayList;
 
-public class AFKPlayerMoveEvent implements Listener {
+public class AFKPoolPlayerMoveEvent implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
@@ -114,7 +113,7 @@ public class AFKPlayerMoveEvent implements Listener {
 
         if (afkPoolsConfig.getConfig().getBoolean("afk-message.leaving-afk.send-message.enabled"))
             playerData.getPlayer().sendMessage(utils.translate(afkPoolsConfig.getConfig().getString("afk-message.leaving-afk.send-message.message"))
-                    .replace("{prefix}", utils.translate(settingConfig.getConfig().getString("prefix")))
+                    .replace("%prefix%", utils.translate(settingConfig.getConfig().getString("prefix")))
                     .replace("{seconds}", playerData.getAFKPoolTime() + "")
             );
 

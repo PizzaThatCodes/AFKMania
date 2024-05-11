@@ -6,13 +6,21 @@ block_location:
 reward_interval_seconds: 5
 afk-message:
   inventory-collect:
-    title: "&6AFK Pools"
+    title: "&6AFK Block"
     subtitle: "&aMining Away..."
   inventory-full:
-    title: "&6AFK Pools"
+    title: "&6AFK Block"
     subtitle: "&cYour inventory is full"
+  leaving-afk:
+    title: "&6AFK Block"
+    subtitle: "&cYou are no longer AFK mining"
+    send-message:
+      enabled: true
+      message: "%prefix% You are no longer afk mining. You were afk mining for {seconds} seconds."
 
 block_settings:
+  original_block: STONE
+  block_distance: 6
   break_speed: 1 # Time in seconds to break each block
   hologram:
     - "Line 1"
@@ -20,7 +28,7 @@ block_settings:
     - "Line 3"
 
 gui:
-  gui_name: ""
+  gui_name: "AFK Block"
   slot_amount: 27
   slots:
     0:

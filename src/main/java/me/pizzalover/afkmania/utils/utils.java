@@ -47,7 +47,7 @@ public class utils {
         boolean commandBlock = world.getGameRuleValue(GameRule.COMMAND_BLOCK_OUTPUT);
         world.setGameRule(GameRule.SEND_COMMAND_FEEDBACK, false);
         world.setGameRule(GameRule.COMMAND_BLOCK_OUTPUT, false);
-        Entity entity = world.spawnEntity(new Location(world, 0, 0, 0), EntityType.MINECART_COMMAND);
+        Entity entity = world.spawnEntity(new Location(world, 0, -320, 0), EntityType.MINECART_COMMAND);
         Main.getInstance().getServer().dispatchCommand(entity, command);
         world.setGameRule(GameRule.SEND_COMMAND_FEEDBACK, commandFeedback);
         world.setGameRule(GameRule.COMMAND_BLOCK_OUTPUT, commandBlock);
