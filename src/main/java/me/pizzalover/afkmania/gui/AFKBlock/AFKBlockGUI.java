@@ -11,33 +11,33 @@ import xyz.xenondevs.invui.window.Window;
 
 public class AFKBlockGUI {
 
-    public static void openJobGUI(Player player) {
+    public static void openUpgradeGUI(Player player) {
 
         String configPath = "gui";
-        int slotAmount = afkBlockConfig.getConfig().getInt(configPath + ".slotsAmount");
+        int slotAmount = afkBlockConfig.getConfig().getInt(configPath + ".slot_amount");
 
         if(slotAmount % 9 != 0) {
             player.sendMessage(utils.translate( utils.addPlaceholderToText(player, messageConfig.getConfig().getString("afk_block.gui.error_messages.slot_amount_not_divisible_by_9")
-                    .replace("{prefix}", settingConfig.getConfig().getString("prefix"))
-                    .replace("{gui}", "afk block gui")
-                    .replace("{slotAmount}", String.valueOf(slotAmount))
+                    .replace("%prefix%", settingConfig.getConfig().getString("prefix"))
+                    .replace("%gui%", afkBlockConfig.getConfig().getString("gui.gui_name"))
+                    .replace("%slot_number%", String.valueOf(slotAmount))
             )));
             return;
         }
 
         if(slotAmount > 54) {
             player.sendMessage(utils.translate( utils.addPlaceholderToText(player, messageConfig.getConfig().getString("afk_block.gui.error_messages.slot_amount_greater_than_54")
-                    .replace("{prefix}", settingConfig.getConfig().getString("prefix"))
-                    .replace("{gui}", "afk block gui")
-                    .replace("{slotAmount}", String.valueOf(slotAmount))
+                    .replace("%prefix%", settingConfig.getConfig().getString("prefix"))
+                    .replace("%gui%", afkBlockConfig.getConfig().getString("gui.gui_name"))
+                    .replace("%slot_number%", String.valueOf(slotAmount))
             )));
             return;
         }
         if(slotAmount < 9) {
             player.sendMessage(utils.translate( utils.addPlaceholderToText(player, messageConfig.getConfig().getString("afk_block.gui.error_messages.slot_amount_less_than_9")
-                    .replace("{prefix}", settingConfig.getConfig().getString("prefix"))
-                    .replace("{gui}", "afk block gui")
-                    .replace("{slotAmount}", String.valueOf(slotAmount))
+                    .replace("%prefix%", settingConfig.getConfig().getString("prefix"))
+                    .replace("%gui%", afkBlockConfig.getConfig().getString("gui.gui_name"))
+                    .replace("%slot_number%", String.valueOf(slotAmount))
             )));
             return;
         }
@@ -56,9 +56,9 @@ public class AFKBlockGUI {
                 slotNum = Integer.parseInt(slot);
             } catch (NumberFormatException exception) {
                 player.sendMessage(utils.translate( utils.addPlaceholderToText(player, messageConfig.getConfig().getString("afk_block.gui.error_messages.invalid_slot_number")
-                        .replace("{prefix}", settingConfig.getConfig().getString("prefix"))
-                        .replace("{gui}", "afk block gui")
-                        .replace("{slot}", slot)
+                        .replace("%prefix%", settingConfig.getConfig().getString("prefix"))
+                        .replace("%gui%", afkBlockConfig.getConfig().getString("gui.gui_name"))
+                        .replace("%slot_number%", slot)
                 )));
                 continue;
             }
@@ -70,8 +70,8 @@ public class AFKBlockGUI {
         Window window = Window.single()
                 .setViewer(player)
                 .setGui(gui)
-                .setTitle(utils.translate( utils.addPlaceholderToText(player, afkBlockConfig.getConfig().getString(configPath + ".name")
-                        .replace("{prefix}", settingConfig.getConfig().getString("prefix")))))
+                .setTitle(utils.translate( utils.addPlaceholderToText(player, afkBlockConfig.getConfig().getString(configPath + ".gui_name")
+                        .replace("%prefix%", settingConfig.getConfig().getString("prefix")))))
                 .build();
         window.open();
 

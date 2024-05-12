@@ -2,6 +2,7 @@ package me.pizzalover.afkmania.listeners;
 
 import com.cryptomorin.xseries.XMaterial;
 import me.pizzalover.afkmania.Main;
+import me.pizzalover.afkmania.gui.AFKBlock.AFKBlockGUI;
 import me.pizzalover.afkmania.modules.AFKBlockModules;
 import me.pizzalover.afkmania.modules.AFKPoolModules;
 import me.pizzalover.afkmania.player_info.afk_block.AFKBlockPlayerData;
@@ -16,6 +17,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -57,7 +59,6 @@ public class AFKBlockPlayerInteract implements Listener {
     @EventHandler
     public void onPlayerBlockBreak(BlockBreakEvent event) {
         Block block = event.getBlock();
-        Player player = event.getPlayer();
 
         AFKBlockModules afkBlockModules = (AFKBlockModules) Main.getModuleManager().getModule("AFKBlock");
         if(block.getLocation().equals(afkBlockModules.getBlockLocation())) {
@@ -80,21 +81,32 @@ public class AFKBlockPlayerInteract implements Listener {
             return;
         }
 
-        AFKBlockPlayerData playerData = null;
+        if(event.getAction() == Action.LEFT_CLICK_BLOCK) {
 
-        for(AFKBlockPlayerData tempPlayerData : afkBlockModules.player_data_afk_block) {
-            if(tempPlayerData.getPlayer().getUniqueId().equals(player.getUniqueId())) {
-                playerData = tempPlayerData;
-                break;
+            AFKBlockPlayerData playerData = null;
+
+            for (AFKBlockPlayerData tempPlayerData : afkBlockModules.player_data_afk_block) {
+                if (tempPlayerData.getPlayer().getUniqueId().equals(player.getUniqueId())) {
+                    playerData = tempPlayerData;
+                    break;
+                }
             }
-        }
 
-        if(playerData != null) {
-            return;
-        }
+            if (playerData != null) {
+                return;
+            }
 
-        playerData = new AFKBlockPlayerData(player, 0);
-        afkBlockModules.player_data_afk_block.add(playerData);
+            playerData = new AFKBlockPlayerData(player, 0);
+            afkBlockModules.player_data_afk_block.add(playerData);
+        } else if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+
+            // Open GUI
+            player.sendMessage(utils.translate( utils.addPlaceholderToText(player, messageConfig.getConfig().getString("afk_block.gui.opening_gui")
+                    .replace("%prefix%", settingConfig.getConfig().getString("prefix"))
+            )));
+            AFKBlockGUI.openUpgradeGUI(player);
+
+        }
     }
 
     @EventHandler
