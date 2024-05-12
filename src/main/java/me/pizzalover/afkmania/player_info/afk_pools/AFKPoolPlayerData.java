@@ -24,7 +24,7 @@ public class AFKPoolPlayerData {
      * Get the afk pool time of the player
      * @return the afk pool time of the player
      */
-    public int getAFKPoolTime() {
+    public int getAFKPoolTimeTicks() {
         return afk_pool_time;
     }
 
@@ -32,7 +32,7 @@ public class AFKPoolPlayerData {
      * Set the afk pool time of the player
      * @param afk_pool_time the afk pool time of the player
      */
-    public void setAFKPoolTime(int afk_pool_time) {
+    public void setAFKPoolTimeTicks(int afk_pool_time) {
         this.afk_pool_time = afk_pool_time;
     }
 
@@ -66,6 +66,10 @@ public class AFKPoolPlayerData {
      */
     public void setAFKPoolRegion(String afk_pool_region) {
         this.afk_pool_region = afk_pool_region;
+    }
+
+    public float getAFKPoolTimeSeconds() {
+        return afk_pool_time/20;
     }
 
 }

@@ -4,7 +4,6 @@ commands:
   unknown_command: '%prefix% &cUnknown command. Type &e/afkmania help &rfor help'
 
 afk_block:
-  cannot_break: '%prefix% &cYou cannot break the AFK block!'
   gui:
     error_messages:
       slot_amount_not_divisible_by_9: '%prefix% &cSlot amount must be divisible by 9'

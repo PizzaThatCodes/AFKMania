@@ -69,15 +69,15 @@ public class AFKPoolModules implements ModuleInterface {
         AFKPoolModules afkPoolModules = (AFKPoolModules) Main.getModuleManager().getModule("AFKPool");
         afkTimerTask = Main.getInstance().getScheduler().runTaskTimer(() -> {
             for(AFKPoolPlayerData playerData : afkPoolModules.player_data_afk_pool) {
-                playerData.setAFKPoolTime(playerData.getAFKPoolTime() + 1);
+                playerData.setAFKPoolTimeTicks(playerData.getAFKPoolTimeTicks() + 1);
 
-                if(playerData.getAFKPoolTime() % afkPoolsConfig.getConfig().getInt("reward_interval_seconds") == 0 && playerData.getPlayer().getInventory().firstEmpty() != -1) {
+                if(playerData.getAFKPoolTimeTicks() % (afkPoolsConfig.getConfig().getDouble("reward_interval_seconds")*20) == 0 && playerData.getPlayer().getInventory().firstEmpty() != -1) {
                     rewardPlayer(playerData.getPlayer(), playerData.getAFKPoolRegion());
                 }
 
             }
 
-        }, 0, 20L);
+        }, 0, 1L);
 
         afkMessageTask = Main.getInstance().getScheduler().runTaskTimerAsynchronously(() -> {
             for(AFKPoolPlayerData playerData : afkPoolModules.player_data_afk_pool) {

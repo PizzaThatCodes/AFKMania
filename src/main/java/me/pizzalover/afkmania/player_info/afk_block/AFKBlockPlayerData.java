@@ -21,7 +21,7 @@ public class AFKBlockPlayerData {
      * Get the afk pool time of the player
      * @return the afk pool time of the player
      */
-    public int getAFKBlockTime() {
+    public int getAFKBlockTimeTicks() {
         return afk_block_time;
     }
 
@@ -29,7 +29,7 @@ public class AFKBlockPlayerData {
      * Set the afk pool time of the player
      * @param afk_block_time the afk pool time of the player
      */
-    public void setAFKBlockTime(int afk_block_time) {
+    public void setAFKBlockTimeTicks(int afk_block_time) {
         this.afk_block_time = afk_block_time;
     }
 
@@ -47,6 +47,14 @@ public class AFKBlockPlayerData {
      */
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    /**
+     * Get the afk pool time of the player in seconds
+     * @return the afk pool time of the player in seconds
+     */
+    public float getAFKBlockTimeSeconds() {
+        return afk_block_time/20;
     }
 
 }

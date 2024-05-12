@@ -114,7 +114,7 @@ public class AFKPoolPlayerMoveEvent implements Listener {
         if (afkPoolsConfig.getConfig().getBoolean("afk-message.leaving-afk.send-message.enabled"))
             playerData.getPlayer().sendMessage(utils.translate(afkPoolsConfig.getConfig().getString("afk-message.leaving-afk.send-message.message"))
                     .replace("%prefix%", utils.translate(settingConfig.getConfig().getString("prefix")))
-                    .replace("{seconds}", playerData.getAFKPoolTime() + "")
+                    .replace("{seconds}", playerData.getAFKPoolTimeSeconds() + "")
             );
 
         playerData.getPlayer().resetTitle();

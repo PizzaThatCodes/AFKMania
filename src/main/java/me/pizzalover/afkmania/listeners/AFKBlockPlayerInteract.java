@@ -61,10 +61,6 @@ public class AFKBlockPlayerInteract implements Listener {
 
         AFKBlockModules afkBlockModules = (AFKBlockModules) Main.getModuleManager().getModule("AFKBlock");
         if(block.getLocation().equals(afkBlockModules.getBlockLocation())) {
-            player.sendMessage(utils.addPlaceholderToText(player, utils.translate(
-                    messageConfig.getConfig().getString("afk_block.cannot_break")
-                            .replace("%prefix%", settingConfig.getConfig().getString("prefix"))
-            )));
             event.setCancelled(true);
         }
     }
@@ -123,7 +119,7 @@ public class AFKBlockPlayerInteract implements Listener {
             if (afkBlockConfig.getConfig().getBoolean("afk-message.leaving-afk.send-message.enabled"))
                 playerData.getPlayer().sendMessage(utils.translate(afkBlockConfig.getConfig().getString("afk-message.leaving-afk.send-message.message"))
                         .replace("%prefix%", utils.translate(settingConfig.getConfig().getString("prefix")))
-                        .replace("{seconds}", playerData.getAFKBlockTime() + "")
+                        .replace("{seconds}", playerData.getAFKBlockTimeSeconds() + "")
                 );
 
             playerData.getPlayer().resetTitle();

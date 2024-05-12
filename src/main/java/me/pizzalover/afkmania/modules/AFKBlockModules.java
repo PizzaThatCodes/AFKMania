@@ -120,30 +120,35 @@ public class AFKBlockModules implements ModuleInterface {
         // Adds 1 to the AFKBlockTime every second
         afkBlockTask = Main.getScheduler().runTaskTimerAsynchronously(() -> {
             for(AFKBlockPlayerData playerData : player_data_afk_block) {
-                playerData.setAFKBlockTime(playerData.getAFKBlockTime() + 1);
+                playerData.setAFKBlockTimeTicks(playerData.getAFKBlockTimeTicks() + 1);
 
-                BlockState blockstate = getBlockLocation().getBlock().getState().copy();
+                if(playerData.getAFKBlockTimeTicks() % (afkBlockConfig.getConfig().getDouble("block_settings.break_speed")*20) == 0) {
+                    playerData.getPlayer().playSound(playerData.getPlayer().getLocation(), "block.break", 1, 1);
 
-                ArrayList<Material> materialList = new ArrayList<>();
-                for(String blocks : afkBlockConfig.getConfig().getStringList("blocks")) {
-                    Material material = XMaterial.valueOf(blocks).parseMaterial();
-                    materialList.add(material);
+                    BlockState blockstate = getBlockLocation().getBlock().getState().copy();
+
+                    ArrayList<Material> materialList = new ArrayList<>();
+                    for(String blocks : afkBlockConfig.getConfig().getStringList("blocks")) {
+                        Material material = XMaterial.valueOf(blocks).parseMaterial();
+                        materialList.add(material);
+                    }
+
+                    if(materialList.size() == 0) {
+                        Main.getInstance().getLogger().severe("No blocks found in the config! Disabling AFKBlock module...");
+                        Main.getModuleManager().disableModule(this);
+                        return;
+                    }
+
+                    int randomIndex = new Random().nextInt(materialList.size());
+                    blockstate.setType(materialList.get(randomIndex));
+
+
+                    playerData.getPlayer().sendBlockChange(getBlockLocation(), blockstate.getBlockData());
+
                 }
-
-                if(materialList.size() == 0) {
-                    Main.getInstance().getLogger().severe("No blocks found in the config! Disabling AFKBlock module...");
-                    Main.getModuleManager().disableModule(this);
-                    return;
-                }
-
-                int randomIndex = new Random().nextInt(materialList.size());
-                blockstate.setType(materialList.get(randomIndex));
-
-
-                playerData.getPlayer().sendBlockChange(getBlockLocation(), blockstate.getBlockData());
 
             }
-        }, 20L, 20L);
+        }, 20L, 1L);
 
         // Mining task, switch the block every time it changes and reward the player...
         afkBlockMining = Main.getScheduler().runTaskTimerAsynchronously(() -> {
@@ -151,12 +156,7 @@ public class AFKBlockModules implements ModuleInterface {
 
 //                block_settings:
 //                break_speed: 1
-                if(playerData.getAFKBlockTime() % afkBlockConfig.getConfig().getInt("block_settings.break_speed") == 0) {
-                    playerData.getPlayer().playSound(playerData.getPlayer().getLocation(), "block.break", 1, 1);
 
-
-
-                }
 
             }
         }, 0, 1L);
