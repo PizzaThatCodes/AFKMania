@@ -4,13 +4,7 @@ import com.cryptomorin.xseries.XMaterial;
 import me.pizzalover.afkmania.Main;
 import me.pizzalover.afkmania.gui.AFKBlock.AFKBlockGUI;
 import me.pizzalover.afkmania.modules.AFKBlockModules;
-import me.pizzalover.afkmania.modules.AFKPoolModules;
 import me.pizzalover.afkmania.player_info.afk_block.AFKBlockPlayerData;
-import me.pizzalover.afkmania.player_info.afk_pools.AFKPoolPlayerData;
-import me.pizzalover.afkmania.utils.config.messageConfig;
-import me.pizzalover.afkmania.utils.config.modules.afkBlockConfig;
-import me.pizzalover.afkmania.utils.config.modules.afkPoolsConfig;
-import me.pizzalover.afkmania.utils.config.settingConfig;
 import me.pizzalover.afkmania.utils.utils;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -20,7 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -49,7 +42,7 @@ public class AFKBlockPlayerInteract implements Listener {
 
 
         BlockState blockstate = afkBlockModules.getBlockLocation().getBlock().getState().copy();
-        blockstate.setType(XMaterial.valueOf(afkBlockConfig.getConfig().getString("block_settings.original_block")).parseMaterial());
+        blockstate.setType(XMaterial.valueOf(Main.getAfkBlockConfig().getConfig().getString("block_settings.original_block")).parseMaterial());
 
         playerData.getPlayer().sendBlockChange(afkBlockModules.getBlockLocation(), blockstate.getBlockData());
 
@@ -101,8 +94,8 @@ public class AFKBlockPlayerInteract implements Listener {
         } else if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
             // Open GUI
-            player.sendMessage(utils.translate( utils.addPlaceholderToText(player, messageConfig.getConfig().getString("afk_block.gui.opening_gui")
-                    .replace("%prefix%", settingConfig.getConfig().getString("prefix"))
+            player.sendMessage(utils.translate( utils.addPlaceholderToText(player, Main.getInstance().getMessageConfig().getConfig().getString("afk_block.gui.opening_gui")
+                    .replace("%prefix%", Main.getInstance().getSettingConfig().getConfig().getString("prefix"))
             )));
             AFKBlockGUI.openUpgradeGUI(player);
 
@@ -114,7 +107,7 @@ public class AFKBlockPlayerInteract implements Listener {
         Player player = event.getPlayer();
         AFKBlockModules afkBlockModules = (AFKBlockModules) Main.getModuleManager().getModule("AFKBlock");
 
-        if(player.getLocation().distance(afkBlockModules.getBlockLocation()) > afkBlockConfig.getConfig().getInt("block_settings.block_distance")) {
+        if(player.getLocation().distance(afkBlockModules.getBlockLocation()) > Main.getAfkBlockConfig().getConfig().getInt("block_settings.block_distance")) {
             AFKBlockPlayerData playerData = null;
 
             for(AFKBlockPlayerData tempPlayerData : afkBlockModules.player_data_afk_block) {
@@ -128,22 +121,22 @@ public class AFKBlockPlayerInteract implements Listener {
                 return;
             }
 
-            if (afkBlockConfig.getConfig().getBoolean("afk-message.leaving-afk.send-message.enabled"))
-                playerData.getPlayer().sendMessage(utils.translate(afkBlockConfig.getConfig().getString("afk-message.leaving-afk.send-message.message"))
-                        .replace("%prefix%", utils.translate(settingConfig.getConfig().getString("prefix")))
+            if (Main.getAfkBlockConfig().getConfig().getBoolean("afk-message.leaving-afk.send-message.enabled"))
+                playerData.getPlayer().sendMessage(utils.translate(Main.getAfkBlockConfig().getConfig().getString("afk-message.leaving-afk.send-message.message"))
+                        .replace("%prefix%", utils.translate(Main.getSettingConfig().getConfig().getString("prefix")))
                         .replace("{seconds}", playerData.getAFKBlockTimeSeconds() + "")
                 );
 
             playerData.getPlayer().resetTitle();
-            playerData.getPlayer().sendTitle(utils.translate(afkBlockConfig.getConfig().getString("afk-message.leaving-afk.title")),
-                    utils.translate(afkBlockConfig.getConfig().getString("afk-message.leaving-afk.subtitle")),
+            playerData.getPlayer().sendTitle(utils.translate(Main.getAfkBlockConfig().getConfig().getString("afk-message.leaving-afk.title")),
+                    utils.translate(Main.getAfkBlockConfig().getConfig().getString("afk-message.leaving-afk.subtitle")),
                     0,
                     10,
                     5);
 
 
             BlockState blockstate = afkBlockModules.getBlockLocation().getBlock().getState().copy();
-            blockstate.setType(XMaterial.valueOf(afkBlockConfig.getConfig().getString("block_settings.original_block")).parseMaterial());
+            blockstate.setType(XMaterial.valueOf(Main.getAfkBlockConfig().getConfig().getString("block_settings.original_block")).parseMaterial());
 
             playerData.getPlayer().sendBlockChange(afkBlockModules.getBlockLocation(), blockstate.getBlockData());
             afkBlockModules.player_data_afk_block.remove(playerData);

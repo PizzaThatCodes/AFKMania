@@ -1,8 +1,8 @@
 package me.pizzalover.afkmania.gui;
 
 import com.cryptomorin.xseries.XMaterial;
+import me.pizzalover.afkmania.Main;
 import me.pizzalover.afkmania.utils.SkullCreator;
-import me.pizzalover.afkmania.utils.config.settingConfig;
 import me.pizzalover.afkmania.utils.utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -31,16 +31,16 @@ public class guiUtils {
         return new AbstractItem() {
             @Override
             public ItemProvider getItemProvider() {
-                if(settingConfig.getConfig().getString(path + "item").split("-")[0].equalsIgnoreCase("base64")) {
-                    String base64String = settingConfig.getConfig().getString(path + "item").replace("base64-", "");
+                if(Main.getAfkBlockConfig().getConfig().getString(path + "item").split("-")[0].equalsIgnoreCase("base64")) {
+                    String base64String = Main.getAfkBlockConfig().getConfig().getString(path + "item").replace("base64-", "");
                     ItemStack base64Skull = SkullCreator.itemWithBase64(XMaterial.PLAYER_HEAD.parseItem(), base64String );
                     SkullMeta base64SkullMeta = (SkullMeta) base64Skull.getItemMeta();
 
-                    base64SkullMeta.setDisplayName(utils.translate( utils.addPlaceholderToText(player, settingConfig.getConfig().getString(path + "name"))));
+                    base64SkullMeta.setDisplayName(utils.translate( utils.addPlaceholderToText(player, Main.getAfkBlockConfig().getConfig().getString(path + "name"))));
 
                     ArrayList<String> lore = new ArrayList<>();
 
-                    for(String s : settingConfig.getConfig().getStringList(path + "lore")) {
+                    for(String s : Main.getAfkBlockConfig().getConfig().getStringList(path + "lore")) {
                         for(String str : s.split("<br>"))
                             lore.add(utils.translate( utils.addPlaceholderToText(player, str)));
                     }
@@ -49,32 +49,32 @@ public class guiUtils {
 
                     return new ItemBuilder(base64Skull);
                 }
-                else if(settingConfig.getConfig().getString(path + "item").split("-")[0].equalsIgnoreCase("head")) {
+                else if(Main.getAfkBlockConfig().getConfig().getString(path + "item").split("-")[0].equalsIgnoreCase("head")) {
                     ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
                     SkullMeta pSkull = (SkullMeta) item.getItemMeta();
-                    pSkull.setDisplayName(utils.translate( utils.addPlaceholderToText(player, settingConfig.getConfig().getString(path + "name"))));
+                    pSkull.setDisplayName(utils.translate( utils.addPlaceholderToText(player, Main.getAfkBlockConfig().getConfig().getString(path + "name"))));
 
                     ArrayList<String> lore = new ArrayList<>();
 
-                    for(String s : settingConfig.getConfig().getStringList(path + "lore")) {
+                    for(String s : Main.getAfkBlockConfig().getConfig().getStringList(path + "lore")) {
                         for(String str : s.split("<br>"))
                             lore.add(utils.translate( utils.addPlaceholderToText(player, str)));
                     }
                     pSkull.setLore(lore);
-                    String playerName = settingConfig.getConfig().getString(path + "item").split("-")[1];
+                    String playerName = Main.getAfkBlockConfig().getConfig().getString(path + "item").split("-")[1];
                     if(playerName.contains("{")) {playerName = player.getName();}
                     pSkull.setOwner(playerName);
                     item.setItemMeta(pSkull);
                     return new ItemBuilder(item);
                 }
-                ItemStack itemStack = new ItemStack(XMaterial.valueOf(settingConfig.getConfig().getString(path + "item")).parseMaterial(), 1);
+                ItemStack itemStack = new ItemStack(XMaterial.valueOf(Main.getAfkBlockConfig().getConfig().getString(path + "item")).parseMaterial(), 1);
                 ItemMeta itemMeta = itemStack.getItemMeta();
 
-                itemMeta.setDisplayName(utils.translate( utils.addPlaceholderToText(player, settingConfig.getConfig().getString(path + "name"))));
+                itemMeta.setDisplayName(utils.translate( utils.addPlaceholderToText(player, Main.getAfkBlockConfig().getConfig().getString(path + "name"))));
 
                 ArrayList<String> lore = new ArrayList<>();
 
-                for(String s : settingConfig.getConfig().getStringList(path + "lore")) {
+                for(String s : Main.getAfkBlockConfig().getConfig().getStringList(path + "lore")) {
                     for(String str : s.split("<br>"))
                         lore.add(utils.translate(utils.addPlaceholderToText(player, str)));
                 }
@@ -88,7 +88,7 @@ public class guiUtils {
             public void handleClick(ClickType clickType, Player player, InventoryClickEvent inventoryClickEvent) {
 
                 if(clickType.isLeftClick()) {
-                    for(String s : settingConfig.getConfig().getStringList(path + "left_click_commands")) {
+                    for(String s : Main.getAfkBlockConfig().getConfig().getStringList(path + "left_click_commands")) {
                         if(s.startsWith("[player]")) {
                             player.performCommand(utils.addPlaceholderToText(player, s).replace("[player] ", ""));
                         } else if (s.startsWith("[console]")) {
@@ -104,7 +104,7 @@ public class guiUtils {
                     }
                 }
                 if(clickType.isRightClick()) {
-                    for(String s : settingConfig.getConfig().getStringList(path + "right_click_commands")) {
+                    for(String s : Main.getAfkBlockConfig().getConfig().getStringList(path + "right_click_commands")) {
                         if(s.startsWith("[player]")) {
                             player.performCommand(utils.addPlaceholderToText(player, s).replace("[player] ", ""));
                         } else if (s.startsWith("[console]")) {

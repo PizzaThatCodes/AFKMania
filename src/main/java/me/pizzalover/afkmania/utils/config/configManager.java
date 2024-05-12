@@ -1,4 +1,4 @@
-package me.pizzalover.afkmania.utils.config.modules;
+package me.pizzalover.afkmania.utils.config;
 
 import me.pizzalover.afkmania.Main;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -8,23 +8,30 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
-public class afkBlockConfig {
+public class configManager {
+    String fileName;
 
-    static String fileName = "modules/afk_block.yml";
-    
-    public static File configFile = new File(Main.getInstance().getDataFolder(), fileName);
-    public static FileConfiguration databaseConfig = YamlConfiguration.loadConfiguration(configFile);
+    public File configFile;
+    public FileConfiguration databaseConfig;
 
-    public static FileConfiguration getConfig() {
+    public configManager(String fileName) {
+        this.fileName = fileName;
+        configFile = new File(Main.getInstance().getDataFolder(), fileName);
+        databaseConfig = YamlConfiguration.loadConfiguration(configFile);
+    }
+
+
+    public FileConfiguration getConfig() {
         return databaseConfig;
     }
 
-    public static File getConfigFile() {
+    public File getConfigFile() {
         return configFile;
     }
 
-    public static void saveConfig() {
+    public void saveConfig() {
         configFile = new File(Main.getInstance().getDataFolder(), fileName);
         databaseConfig = YamlConfiguration.loadConfiguration(configFile);
         try {
@@ -34,7 +41,7 @@ public class afkBlockConfig {
         }
     }
 
-    public static void setConfig(String path, String value) {
+    public void setConfig(String path, String value) {
         databaseConfig.set(path, value);
         try {
             getConfig().save(getConfigFile());
@@ -43,7 +50,7 @@ public class afkBlockConfig {
         }
         reloadConfig();
     }
-    public static void setConfig(String path, long value) {
+    public void setConfig(String path, long value) {
         databaseConfig.set(path, value);
         try {
             getConfig().save(getConfigFile());
@@ -53,22 +60,22 @@ public class afkBlockConfig {
         reloadConfig();
     }
 
-    public static void reloadConfig() {
-            if (configFile == null) {
-                configFile = new File(Main.getInstance().getDataFolder(), fileName);
-            }
-            databaseConfig = YamlConfiguration.loadConfiguration(configFile);
+    public void reloadConfig() {
+        if (configFile == null) {
+            configFile = new File(Main.getInstance().getDataFolder(), fileName);
+        }
+        databaseConfig = YamlConfiguration.loadConfiguration(configFile);
 
-            // Look for defaults in the jar
-            File defConfigStream = new File(Main.getInstance().getDataFolder(), fileName);
-            if (defConfigStream != null) {
-                YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-                databaseConfig.setDefaults(defConfig);
-            }
+        // Look for defaults in the jar
+        File defConfigStream = new File(Main.getInstance().getDataFolder(), fileName);
+        if (defConfigStream != null) {
+            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+            databaseConfig.setDefaults(defConfig);
+        }
     }
 
 
-    public static void updateConfig() {
+    public void updateConfig(List<String> exclude) {
         if (!new File(Main.getInstance().getDataFolder() + "/" + fileName).exists()) {
             Main.getInstance().saveResource(fileName, false);
         }
@@ -80,8 +87,13 @@ public class afkBlockConfig {
         YamlConfiguration internalLangConfig = YamlConfiguration.loadConfiguration(defConfigStream);
 
         // Gets all the keys inside the internal file and iterates through all of it's key pairs
+        check:
         for (String string : internalLangConfig.getKeys(true)) {
-            if(string.startsWith("gui") || string.startsWith("block_settings.hologram") || string.startsWith("upgrades")) continue;
+            if(exclude != null && !exclude.isEmpty()) {
+                for(String excludeString : exclude) {
+                    if(string.startsWith(excludeString)) continue check;
+                }
+            }
             // Checks if the external file contains the key already.
             if (!externalYamlConfig.contains(string)) {
                 // If it doesn't contain the key, we set the key based off what was found inside the plugin jar
@@ -94,5 +106,5 @@ public class afkBlockConfig {
             io.printStackTrace();
         }
     }
-
+    
 }

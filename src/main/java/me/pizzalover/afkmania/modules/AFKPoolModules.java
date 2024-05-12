@@ -5,13 +5,13 @@ import me.pizzalover.afkmania.Main;
 import me.pizzalover.afkmania.listeners.AFKPoolPlayerMoveEvent;
 import me.pizzalover.afkmania.modules.manager.ModuleInterface;
 import me.pizzalover.afkmania.player_info.afk_pools.AFKPoolPlayerData;
-import me.pizzalover.afkmania.utils.config.modules.afkPoolsConfig;
 import me.pizzalover.afkmania.utils.utils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -45,14 +45,14 @@ public class AFKPoolModules implements ModuleInterface {
     @Override
     public void enable() {
 
-        if(!afkPoolsConfig.getConfigFile().exists()) {
+        if(!Main.getAfkPoolsConfig().getConfigFile().exists()) {
             Main.getInstance().saveResource("modules/afk_pool.yml", false);
         }
 
-        afkPoolsConfig.updateConfig();
+        Main.getAfkPoolsConfig().updateConfig(Arrays.asList("rewards", "afk_pools"));
 
-        afkPoolsConfig.saveConfig();
-        afkPoolsConfig.reloadConfig();
+        Main.getAfkPoolsConfig().saveConfig();
+        Main.getAfkPoolsConfig().reloadConfig();
 
         if(Main.getInstance().getServer().getPluginManager().getPlugin("WorldGuard") == null) {
             Main.getInstance().getLogger().severe("WorldGuard is not installed! Disabling AFKPool module...");
@@ -71,7 +71,7 @@ public class AFKPoolModules implements ModuleInterface {
             for(AFKPoolPlayerData playerData : afkPoolModules.player_data_afk_pool) {
                 playerData.setAFKPoolTimeTicks(playerData.getAFKPoolTimeTicks() + 1);
 
-                if(playerData.getAFKPoolTimeTicks() % (afkPoolsConfig.getConfig().getDouble("reward_interval_seconds")*20) == 0 && playerData.getPlayer().getInventory().firstEmpty() != -1) {
+                if(playerData.getAFKPoolTimeTicks() % (Main.getAfkPoolsConfig().getConfig().getDouble("reward_interval_seconds")*20) == 0 && playerData.getPlayer().getInventory().firstEmpty() != -1) {
                     rewardPlayer(playerData.getPlayer(), playerData.getAFKPoolRegion());
                 }
 
@@ -82,16 +82,16 @@ public class AFKPoolModules implements ModuleInterface {
         afkMessageTask = Main.getInstance().getScheduler().runTaskTimerAsynchronously(() -> {
             for(AFKPoolPlayerData playerData : afkPoolModules.player_data_afk_pool) {
                 if(playerData.getPlayer().getInventory().firstEmpty() == -1) {
-                    playerData.getPlayer().sendTitle(utils.translate(afkPoolsConfig.getConfig().getString("afk-message.inventory-full.title")),
-                            utils.translate(afkPoolsConfig.getConfig().getString("afk-message.inventory-full.subtitle")),
+                    playerData.getPlayer().sendTitle(utils.translate(Main.getAfkPoolsConfig().getConfig().getString("afk-message.inventory-full.title")),
+                            utils.translate(Main.getAfkPoolsConfig().getConfig().getString("afk-message.inventory-full.subtitle")),
                             0,
                             5,
                             5
                     );
                     continue;
                 } else {
-                    playerData.getPlayer().sendTitle(utils.translate(afkPoolsConfig.getConfig().getString("afk-message.inventory-collect.title")),
-                            utils.translate(afkPoolsConfig.getConfig().getString("afk-message.inventory-collect.subtitle")),
+                    playerData.getPlayer().sendTitle(utils.translate(Main.getAfkPoolsConfig().getConfig().getString("afk-message.inventory-collect.title")),
+                            utils.translate(Main.getAfkPoolsConfig().getConfig().getString("afk-message.inventory-collect.subtitle")),
                             0,
                             5,
                             5
@@ -139,14 +139,14 @@ public class AFKPoolModules implements ModuleInterface {
      */
     private void rewardPlayer(Player player, String region) {
         String region_name = "";
-        for(String regions : afkPoolsConfig.getConfig().getConfigurationSection("afk_pools").getKeys(false)) {
-            if(afkPoolsConfig.getConfig().getString("afk_pools." + regions + ".region_name").equalsIgnoreCase(region)) {
+        for(String regions : Main.getAfkPoolsConfig().getConfig().getConfigurationSection("afk_pools").getKeys(false)) {
+            if(Main.getAfkPoolsConfig().getConfig().getString("afk_pools." + regions + ".region_name").equalsIgnoreCase(region)) {
                 region_name = regions;
                 break;
             }
         }
-        List<String> rewards_to_get = afkPoolsConfig.getConfig().getStringList("afk_pools." + region_name + ".rewards");
-        ConfigurationSection rewardsSection = afkPoolsConfig.getConfig().getConfigurationSection("rewards");
+        List<String> rewards_to_get = Main.getAfkPoolsConfig().getConfig().getStringList("afk_pools." + region_name + ".rewards");
+        ConfigurationSection rewardsSection = Main.getAfkPoolsConfig().getConfig().getConfigurationSection("rewards");
         if (rewardsSection == null) {
             Main.getInstance().getLogger().severe("Rewards section is missing in the config file.");
             return;

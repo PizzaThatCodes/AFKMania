@@ -1,9 +1,7 @@
 package me.pizzalover.afkmania.gui.AFKBlock;
 
+import me.pizzalover.afkmania.Main;
 import me.pizzalover.afkmania.gui.guiUtils;
-import me.pizzalover.afkmania.utils.config.messageConfig;
-import me.pizzalover.afkmania.utils.config.modules.afkBlockConfig;
-import me.pizzalover.afkmania.utils.config.settingConfig;
 import me.pizzalover.afkmania.utils.utils;
 import org.bukkit.entity.Player;
 import xyz.xenondevs.invui.gui.Gui;
@@ -14,29 +12,29 @@ public class AFKBlockGUI {
     public static void openUpgradeGUI(Player player) {
 
         String configPath = "gui";
-        int slotAmount = afkBlockConfig.getConfig().getInt(configPath + ".slot_amount");
+        int slotAmount = Main.getAfkBlockConfig().getConfig().getInt(configPath + ".slot_amount");
 
         if(slotAmount % 9 != 0) {
-            player.sendMessage(utils.translate( utils.addPlaceholderToText(player, messageConfig.getConfig().getString("afk_block.gui.error_messages.slot_amount_not_divisible_by_9")
-                    .replace("%prefix%", settingConfig.getConfig().getString("prefix"))
-                    .replace("%gui%", afkBlockConfig.getConfig().getString("gui.gui_name"))
+            player.sendMessage(utils.translate( utils.addPlaceholderToText(player, Main.getMessageConfig().getConfig().getString("afk_block.gui.error_messages.slot_amount_not_divisible_by_9")
+                    .replace("%prefix%", Main.getSettingConfig().getConfig().getString("prefix"))
+                    .replace("%gui%", Main.getAfkBlockConfig().getConfig().getString(configPath + ".gui_name"))
                     .replace("%slot_number%", String.valueOf(slotAmount))
             )));
             return;
         }
 
         if(slotAmount > 54) {
-            player.sendMessage(utils.translate( utils.addPlaceholderToText(player, messageConfig.getConfig().getString("afk_block.gui.error_messages.slot_amount_greater_than_54")
-                    .replace("%prefix%", settingConfig.getConfig().getString("prefix"))
-                    .replace("%gui%", afkBlockConfig.getConfig().getString("gui.gui_name"))
+            player.sendMessage(utils.translate( utils.addPlaceholderToText(player, Main.getMessageConfig().getConfig().getString("afk_block.gui.error_messages.slot_amount_greater_than_54")
+                    .replace("%prefix%", Main.getSettingConfig().getConfig().getString("prefix"))
+                    .replace("%gui%", Main.getAfkBlockConfig().getConfig().getString(configPath + ".gui_name"))
                     .replace("%slot_number%", String.valueOf(slotAmount))
             )));
             return;
         }
         if(slotAmount < 9) {
-            player.sendMessage(utils.translate( utils.addPlaceholderToText(player, messageConfig.getConfig().getString("afk_block.gui.error_messages.slot_amount_less_than_9")
-                    .replace("%prefix%", settingConfig.getConfig().getString("prefix"))
-                    .replace("%gui%", afkBlockConfig.getConfig().getString("gui.gui_name"))
+            player.sendMessage(utils.translate( utils.addPlaceholderToText(player, Main.getMessageConfig().getConfig().getString("afk_block.gui.error_messages.slot_amount_less_than_9")
+                    .replace("%prefix%", Main.getSettingConfig().getConfig().getString("prefix"))
+                    .replace("%gui%", Main.getAfkBlockConfig().getConfig().getString(configPath + ".gui_name"))
                     .replace("%slot_number%", String.valueOf(slotAmount))
             )));
             return;
@@ -47,7 +45,7 @@ public class AFKBlockGUI {
 
 
 
-        for(String slot : afkBlockConfig.getConfig().getConfigurationSection(configPath + ".slots").getKeys(false)) {
+        for(String slot : Main.getAfkBlockConfig().getConfig().getConfigurationSection(configPath + ".slots").getKeys(false)) {
             String path = configPath + ".slots." + slot + ".";
 
             int slotNum;
@@ -55,9 +53,9 @@ public class AFKBlockGUI {
             try {
                 slotNum = Integer.parseInt(slot);
             } catch (NumberFormatException exception) {
-                player.sendMessage(utils.translate( utils.addPlaceholderToText(player, messageConfig.getConfig().getString("afk_block.gui.error_messages.invalid_slot_number")
-                        .replace("%prefix%", settingConfig.getConfig().getString("prefix"))
-                        .replace("%gui%", afkBlockConfig.getConfig().getString("gui.gui_name"))
+                player.sendMessage(utils.translate( utils.addPlaceholderToText(player, Main.getMessageConfig().getConfig().getString("afk_block.gui.error_messages.invalid_slot_number")
+                        .replace("%prefix%", Main.getSettingConfig().getConfig().getString("prefix"))
+                        .replace("%gui%", Main.getAfkBlockConfig().getConfig().getString(configPath + ".gui_name"))
                         .replace("%slot_number%", slot)
                 )));
                 continue;
@@ -70,10 +68,10 @@ public class AFKBlockGUI {
         Window window = Window.single()
                 .setViewer(player)
                 .setGui(gui)
-                .setTitle(utils.translate( utils.addPlaceholderToText(player, afkBlockConfig.getConfig().getString(configPath + ".gui_name")
-                        .replace("%prefix%", settingConfig.getConfig().getString("prefix")))))
+                .setTitle(utils.translate( utils.addPlaceholderToText(player, Main.getAfkBlockConfig().getConfig().getString(configPath + ".gui_name"))))
                 .build();
         window.open();
+
 
     }
 

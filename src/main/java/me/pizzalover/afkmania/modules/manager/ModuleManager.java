@@ -3,7 +3,6 @@ package me.pizzalover.afkmania.modules.manager;
 import me.pizzalover.afkmania.Main;
 import me.pizzalover.afkmania.modules.AFKBlockModules;
 import me.pizzalover.afkmania.modules.AFKPoolModules;
-import me.pizzalover.afkmania.utils.config.settingConfig;
 
 import java.util.ArrayList;
 
@@ -92,14 +91,14 @@ public class ModuleManager {
             getAllModules().clear();
 
         AFKPoolModules afkPoolModule = new AFKPoolModules();
-        if(settingConfig.getConfig().getBoolean("modules.afk_pool.enabled")) {
+        if(Main.getSettingConfig().getConfig().getBoolean("modules.afk_pool.enabled")) {
             enableModule(afkPoolModule);
         } else {
             disableModule(afkPoolModule);
         }
 
         AFKBlockModules afkBlockModule = new AFKBlockModules();
-        if(settingConfig.getConfig().getBoolean("modules.afk_block.enabled")) {
+        if(Main.getSettingConfig().getConfig().getBoolean("modules.afk_block.enabled")) {
             enableModule(afkBlockModule);
         } else {
             disableModule(afkBlockModule);

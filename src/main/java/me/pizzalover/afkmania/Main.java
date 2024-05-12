@@ -5,15 +5,21 @@ import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskSchedule
 import me.pizzalover.afkmania.commands.afkManiaReload;
 import me.pizzalover.afkmania.modules.manager.ModuleInterface;
 import me.pizzalover.afkmania.modules.manager.ModuleManager;
-import me.pizzalover.afkmania.utils.config.messageConfig;
-import me.pizzalover.afkmania.utils.config.settingConfig;
+import me.pizzalover.afkmania.utils.config.configManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Arrays;
 
 public final class Main extends JavaPlugin {
 
     private static Main instance;
     private static TaskScheduler scheduler;
     private static ModuleManager moduleManager;
+
+    private static configManager settingConfig;
+    private static configManager messageConfig;
+    private static configManager afkBlockConfig;
+    private static configManager afkPoolsConfig;
 
     /**
      * Get the instance of the plugin
@@ -39,11 +45,48 @@ public final class Main extends JavaPlugin {
         return moduleManager;
     }
 
+    /**
+     * Get the setting config of the plugin
+     * @return the setting config of the plugin
+     */
+    public static configManager getSettingConfig() {
+        return settingConfig;
+    }
+
+    /**
+     * Get the message config of the plugin
+     * @return the message config of the plugin
+     */
+    public static configManager getMessageConfig() {
+        return messageConfig;
+    }
+
+    /**
+     * Get the afk block config of the plugin
+     * @return the afk block config of the plugin
+     */
+    public static configManager getAfkBlockConfig() {
+        return afkBlockConfig;
+    }
+
+    /**
+     * Get the afk pools config of the plugin
+     * @return the afk pools config of the plugin
+     */
+    public static configManager getAfkPoolsConfig() {
+        return afkPoolsConfig;
+    }
+
     @Override
     public void onEnable() {
         this.instance = this;
         this.moduleManager = new ModuleManager();
         scheduler = UniversalScheduler.getScheduler(this);
+
+        settingConfig = new configManager("config.yml");
+        messageConfig = new configManager("messages.yml");
+        afkBlockConfig = new configManager("modules/afk_block.yml");
+        afkPoolsConfig = new configManager("modules/afk_pool.yml");
 
         // Registering the modules
         getModuleManager().checkConfigModules();
@@ -61,8 +104,8 @@ public final class Main extends JavaPlugin {
         }
 
         // Updating the config files
-        settingConfig.updateConfig();
-        messageConfig.updateConfig();
+        settingConfig.updateConfig(null);
+        messageConfig.updateConfig(null);
 
         settingConfig.saveConfig();
         settingConfig.reloadConfig();
@@ -78,6 +121,8 @@ public final class Main extends JavaPlugin {
 
 
         getLogger().info("AFKMania has been enabled!");
+
+
     }
 
     @Override

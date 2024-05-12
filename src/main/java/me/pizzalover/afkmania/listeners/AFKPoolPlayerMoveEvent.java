@@ -8,8 +8,6 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import me.pizzalover.afkmania.Main;
 import me.pizzalover.afkmania.modules.AFKPoolModules;
 import me.pizzalover.afkmania.player_info.afk_pools.AFKPoolPlayerData;
-import me.pizzalover.afkmania.utils.config.modules.afkPoolsConfig;
-import me.pizzalover.afkmania.utils.config.settingConfig;
 import me.pizzalover.afkmania.utils.utils;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -73,8 +71,8 @@ public class AFKPoolPlayerMoveEvent implements Listener {
         }
 
         ArrayList<String> region_list = new ArrayList<>();
-        for (String afk_pool_region_list : afkPoolsConfig.getConfig().getConfigurationSection("afk_pools").getKeys(false)) {
-            region_list.add(afkPoolsConfig.getConfig().getString("afk_pools." + afk_pool_region_list + ".region_name"));
+        for (String afk_pool_region_list : Main.getAfkPoolsConfig().getConfig().getConfigurationSection("afk_pools").getKeys(false)) {
+            region_list.add(Main.getAfkPoolsConfig().getConfig().getString("afk_pools." + afk_pool_region_list + ".region_name"));
 //            player.sendMessage(afk_pool_region_list);
         }
 
@@ -111,15 +109,15 @@ public class AFKPoolPlayerMoveEvent implements Listener {
             return;
         }
 
-        if (afkPoolsConfig.getConfig().getBoolean("afk-message.leaving-afk.send-message.enabled"))
-            playerData.getPlayer().sendMessage(utils.translate(afkPoolsConfig.getConfig().getString("afk-message.leaving-afk.send-message.message"))
-                    .replace("%prefix%", utils.translate(settingConfig.getConfig().getString("prefix")))
+        if (Main.getAfkPoolsConfig().getConfig().getBoolean("afk-message.leaving-afk.send-message.enabled"))
+            playerData.getPlayer().sendMessage(utils.translate(Main.getAfkPoolsConfig().getConfig().getString("afk-message.leaving-afk.send-message.message"))
+                    .replace("%prefix%", utils.translate(Main.getSettingConfig().getConfig().getString("prefix")))
                     .replace("{seconds}", playerData.getAFKPoolTimeSeconds() + "")
             );
 
         playerData.getPlayer().resetTitle();
-        playerData.getPlayer().sendTitle(utils.translate(afkPoolsConfig.getConfig().getString("afk-message.leaving-afk.title")),
-                utils.translate(afkPoolsConfig.getConfig().getString("afk-message.leaving-afk.subtitle")),
+        playerData.getPlayer().sendTitle(utils.translate(Main.getAfkPoolsConfig().getConfig().getString("afk-message.leaving-afk.title")),
+                utils.translate(Main.getAfkPoolsConfig().getConfig().getString("afk-message.leaving-afk.subtitle")),
                 0,
                 10,
                 5);

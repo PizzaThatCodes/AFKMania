@@ -8,7 +8,6 @@ import me.pizzalover.afkmania.Main;
 import me.pizzalover.afkmania.listeners.AFKBlockPlayerInteract;
 import me.pizzalover.afkmania.modules.manager.ModuleInterface;
 import me.pizzalover.afkmania.player_info.afk_block.AFKBlockPlayerData;
-import me.pizzalover.afkmania.utils.config.modules.afkBlockConfig;
 import me.pizzalover.afkmania.utils.utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,6 +15,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.event.HandlerList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class AFKBlockModules implements ModuleInterface {
@@ -50,13 +50,13 @@ public class AFKBlockModules implements ModuleInterface {
     @Override
     public void enable() {
 
-        if(!afkBlockConfig.getConfigFile().exists()) {
+        if(!Main.getAfkBlockConfig().getConfigFile().exists()) {
             Main.getInstance().saveResource("modules/afk_block.yml", false);
         }
-        afkBlockConfig.updateConfig();
+        Main.getAfkBlockConfig().updateConfig(Arrays.asList("gui", "block_settings.hologram", "upgrades"));
 
-        afkBlockConfig.saveConfig();
-        afkBlockConfig.reloadConfig();
+        Main.getAfkBlockConfig().saveConfig();
+        Main.getAfkBlockConfig().reloadConfig();
 
 
         // Check if DecentHolograms is installed
@@ -72,10 +72,10 @@ public class AFKBlockModules implements ModuleInterface {
 
         // Load the block location for holograms and that...
         blockLocation = new Location(
-                Main.getInstance().getServer().getWorld(afkBlockConfig.getConfig().getString("block_location.world")),
-                afkBlockConfig.getConfig().getDouble("block_location.x"),
-                afkBlockConfig.getConfig().getDouble("block_location.y"),
-                afkBlockConfig.getConfig().getDouble("block_location.z")
+                Main.getInstance().getServer().getWorld(Main.getAfkBlockConfig().getConfig().getString("block_location.world")),
+                Main.getAfkBlockConfig().getConfig().getDouble("block_location.x"),
+                Main.getAfkBlockConfig().getConfig().getDouble("block_location.y"),
+                Main.getAfkBlockConfig().getConfig().getDouble("block_location.z")
         );
         blockLocation = blockLocation.getBlock().getLocation();
 
@@ -85,7 +85,7 @@ public class AFKBlockModules implements ModuleInterface {
 
         // Load the hologram lines
         ArrayList<String> hologramLines = new ArrayList<>();
-        for(String hologram_lines : afkBlockConfig.getConfig().getStringList("block_settings.hologram")) {
+        for(String hologram_lines : Main.getAfkBlockConfig().getConfig().getStringList("block_settings.hologram")) {
             hologramLocation.add(0, 0.3, 0);
             hologramLines.add(utils.translate(hologram_lines));
         }
@@ -99,16 +99,16 @@ public class AFKBlockModules implements ModuleInterface {
         afkMessageTask = Main.getScheduler().runTaskTimerAsynchronously(() -> {
             for(AFKBlockPlayerData playerData : player_data_afk_block) {
                 if(playerData.getPlayer().getInventory().firstEmpty() == -1) {
-                    playerData.getPlayer().sendTitle(utils.translate(afkBlockConfig.getConfig().getString("afk-message.inventory-full.title")),
-                            utils.translate(afkBlockConfig.getConfig().getString("afk-message.inventory-full.subtitle")),
+                    playerData.getPlayer().sendTitle(utils.translate(Main.getAfkBlockConfig().getConfig().getString("afk-message.inventory-full.title")),
+                            utils.translate(Main.getAfkBlockConfig().getConfig().getString("afk-message.inventory-full.subtitle")),
                             0,
                             5,
                             5
                     );
                     continue;
                 } else {
-                    playerData.getPlayer().sendTitle(utils.translate(afkBlockConfig.getConfig().getString("afk-message.inventory-collect.title")),
-                            utils.translate(afkBlockConfig.getConfig().getString("afk-message.inventory-collect.subtitle")),
+                    playerData.getPlayer().sendTitle(utils.translate(Main.getAfkBlockConfig().getConfig().getString("afk-message.inventory-collect.title")),
+                            utils.translate(Main.getAfkBlockConfig().getConfig().getString("afk-message.inventory-collect.subtitle")),
                             0,
                             5,
                             5
@@ -122,13 +122,13 @@ public class AFKBlockModules implements ModuleInterface {
             for(AFKBlockPlayerData playerData : player_data_afk_block) {
                 playerData.setAFKBlockTimeTicks(playerData.getAFKBlockTimeTicks() + 1);
 
-                if(playerData.getAFKBlockTimeTicks() % (afkBlockConfig.getConfig().getDouble("block_settings.break_speed")*20) == 0) {
+                if(playerData.getAFKBlockTimeTicks() % (Main.getAfkBlockConfig().getConfig().getDouble("block_settings.break_speed")*20) == 0) {
                     playerData.getPlayer().playSound(playerData.getPlayer().getLocation(), "block.break", 1, 1);
 
                     BlockState blockstate = getBlockLocation().getBlock().getState().copy();
 
                     ArrayList<Material> materialList = new ArrayList<>();
-                    for(String blocks : afkBlockConfig.getConfig().getStringList("blocks")) {
+                    for(String blocks : Main.getAfkBlockConfig().getConfig().getStringList("blocks")) {
                         Material material = XMaterial.valueOf(blocks).parseMaterial();
                         materialList.add(material);
                     }
