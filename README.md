@@ -1,7 +1,7 @@
 # AFKMania
 
 ![Minecraft](https://img.shields.io/badge/Minecraft-1.20.4-brightgreen)
-![License](https://img.shields.io/badge/License-MIT-blue.svg)
+![License](https://img.shields.io/badge/License-CC0-blue.svg)
 ![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)
 
 AFKMania is a versatile and customizable AFK (Away From Keyboard) system for Minecraft 1.20.4 servers. It provides multiple modules to choose from, including a WorldGuard region-based system that allows you to set specific rewards for players who stay AFK in designated areas.
@@ -93,7 +93,7 @@ We welcome contributions from the community! To contribute:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the CC0 License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
