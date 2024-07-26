@@ -1,6 +1,6 @@
 # AFKMania
 
-![Minecraft]([https://img.shields.io/badge/Minecraft-1.20.4-brightgreen](https://img.shields.io/badge/Minecraft-1.20.4_--_1.21-brightgreen))
+![Minecraft](https://img.shields.io/badge/Minecraft-1.20.4_--_1.21-brightgreen)
 ![License](https://img.shields.io/badge/License-CC0-blue.svg)
 ![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)
 
