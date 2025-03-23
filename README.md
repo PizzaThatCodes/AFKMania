@@ -6,6 +6,9 @@
 
 AFKMania is a versatile and customizable AFK (Away From Keyboard) system for Minecraft 1.20.4 to 1.21 servers. It provides multiple modules to choose from, including a WorldGuard region-based system that allows you to set specific rewards for players who stay AFK in designated areas.
 
+For most updated build you can use the Jenkins Build.
+https://jenkins.pizzalover.dev/job/AFKMania/
+
 ## Features
 
 - **Multiple AFK Modules**: Choose from various AFK systems to suit your server's needs.
