@@ -2,10 +2,14 @@ package me.pizzalover.afkmania.player_info.afk_block;
 
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AFKBlockPlayerData {
 
     Player player;
     int afk_block_time;
+    private final Map<String, Integer> upgradeLevels;
 
     /**
      * Constructor for the player data afk pool
@@ -15,6 +19,7 @@ public class AFKBlockPlayerData {
     public AFKBlockPlayerData(Player player, int afk_block_time) {
         this.player = player;
         this.afk_block_time = afk_block_time;
+        this.upgradeLevels = new HashMap<>();
     }
 
     /**
@@ -54,7 +59,18 @@ public class AFKBlockPlayerData {
      * @return the afk pool time of the player in seconds
      */
     public float getAFKBlockTimeSeconds() {
-        return afk_block_time/20;
+        return afk_block_time / 20f;
     }
 
+    public int getUpgradeLevel(String upgradeKey) {
+        return upgradeLevels.getOrDefault(upgradeKey.toLowerCase(), 0);
+    }
+
+    public void setUpgradeLevel(String upgradeKey, int level) {
+        upgradeLevels.put(upgradeKey.toLowerCase(), Math.max(level, 0));
+    }
+
+    public Map<String, Integer> getUpgradeLevels() {
+        return upgradeLevels;
+    }
 }

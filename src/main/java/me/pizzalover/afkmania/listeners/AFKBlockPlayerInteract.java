@@ -25,27 +25,15 @@ public class AFKBlockPlayerInteract implements Listener {
         Player player = event.getPlayer();
         AFKBlockModules afkBlockModules = (AFKBlockModules) Main.getModuleManager().getModule("AFKBlock");
 
-        AFKBlockPlayerData playerData = null;
+        AFKBlockPlayerData playerData = afkBlockModules.getPlayerData(player);
 
-        for(AFKBlockPlayerData tempPlayerData : afkBlockModules.player_data_afk_block) {
-            if(tempPlayerData.getPlayer().getUniqueId().equals(player.getUniqueId())) {
-                playerData = tempPlayerData;
-                break;
-            }
-        }
-
-        if(playerData == null) {
+        if (playerData == null) {
             return;
         }
 
         playerData.getPlayer().resetTitle();
-
-
-        BlockState blockstate = afkBlockModules.getBlockLocation().getBlock().getState().copy();
-        blockstate.setType(XMaterial.valueOf(Main.getAfkBlockConfig().getConfig().getString("block_settings.original_block")).parseMaterial());
-
-        playerData.getPlayer().sendBlockChange(afkBlockModules.getBlockLocation(), blockstate.getBlockData());
-
+        restoreDefaultBlock(playerData, afkBlockModules);
+        afkBlockModules.saveUpgrades(playerData);
         afkBlockModules.player_data_afk_block.remove(playerData);
     }
 
@@ -54,7 +42,7 @@ public class AFKBlockPlayerInteract implements Listener {
         Block block = event.getBlock();
 
         AFKBlockModules afkBlockModules = (AFKBlockModules) Main.getModuleManager().getModule("AFKBlock");
-        if(block.getLocation().equals(afkBlockModules.getBlockLocation())) {
+        if (block.getLocation().equals(afkBlockModules.getBlockLocation())) {
             event.setCancelled(true);
         }
     }
@@ -63,38 +51,27 @@ public class AFKBlockPlayerInteract implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
 
 
-        if(event.getClickedBlock() == null) {
+        if (event.getClickedBlock() == null) {
             return;
         }
 
         Player player = event.getPlayer();
         AFKBlockModules afkBlockModules = (AFKBlockModules) Main.getModuleManager().getModule("AFKBlock");
 
-        if(!event.getClickedBlock().getLocation().equals(afkBlockModules.getBlockLocation())) {
+        if (!event.getClickedBlock().getLocation().equals(afkBlockModules.getBlockLocation())) {
             return;
         }
 
-        if(event.getAction() == Action.LEFT_CLICK_BLOCK) {
-
-            AFKBlockPlayerData playerData = null;
-
-            for (AFKBlockPlayerData tempPlayerData : afkBlockModules.player_data_afk_block) {
-                if (tempPlayerData.getPlayer().getUniqueId().equals(player.getUniqueId())) {
-                    playerData = tempPlayerData;
-                    break;
-                }
-            }
-
+        if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
+            AFKBlockPlayerData playerData = afkBlockModules.getPlayerData(player);
             if (playerData != null) {
                 return;
             }
 
-            playerData = new AFKBlockPlayerData(player, 0);
-            afkBlockModules.player_data_afk_block.add(playerData);
-        } else if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            afkBlockModules.getOrCreatePlayerData(player);
+        } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
-            // Open GUI
-            player.sendMessage(utils.translate( utils.addPlaceholderToText(player, Main.getInstance().getMessageConfig().getConfig().getString("afk_block.gui.opening_gui")
+            player.sendMessage(utils.translate(utils.addPlaceholderToText(player, Main.getInstance().getMessageConfig().getConfig().getString("afk_block.gui.opening_gui")
                     .replace("%prefix%", Main.getInstance().getSettingConfig().getConfig().getString("prefix"))
             )));
             AFKBlockGUI.openUpgradeGUI(player);
@@ -107,17 +84,10 @@ public class AFKBlockPlayerInteract implements Listener {
         Player player = event.getPlayer();
         AFKBlockModules afkBlockModules = (AFKBlockModules) Main.getModuleManager().getModule("AFKBlock");
 
-        if(player.getLocation().distance(afkBlockModules.getBlockLocation()) > Main.getAfkBlockConfig().getConfig().getInt("block_settings.block_distance")) {
-            AFKBlockPlayerData playerData = null;
+        if (player.getLocation().distance(afkBlockModules.getBlockLocation()) > Main.getAfkBlockConfig().getConfig().getInt("block_settings.block_distance")) {
+            AFKBlockPlayerData playerData = afkBlockModules.getPlayerData(player);
 
-            for(AFKBlockPlayerData tempPlayerData : afkBlockModules.player_data_afk_block) {
-                if(tempPlayerData.getPlayer().getUniqueId().equals(player.getUniqueId())) {
-                    playerData = tempPlayerData;
-                    break;
-                }
-            }
-
-            if(playerData == null) {
+            if (playerData == null) {
                 return;
             }
 
@@ -134,13 +104,17 @@ public class AFKBlockPlayerInteract implements Listener {
                     10,
                     5);
 
-
-            BlockState blockstate = afkBlockModules.getBlockLocation().getBlock().getState().copy();
-            blockstate.setType(XMaterial.valueOf(Main.getAfkBlockConfig().getConfig().getString("block_settings.original_block")).parseMaterial());
-
-            playerData.getPlayer().sendBlockChange(afkBlockModules.getBlockLocation(), blockstate.getBlockData());
+            restoreDefaultBlock(playerData, afkBlockModules);
+            afkBlockModules.saveUpgrades(playerData);
             afkBlockModules.player_data_afk_block.remove(playerData);
         }
+    }
+
+    private void restoreDefaultBlock(AFKBlockPlayerData playerData, AFKBlockModules afkBlockModules) {
+        BlockState blockstate = afkBlockModules.getBlockLocation().getBlock().getState().copy();
+        blockstate.setType(XMaterial.valueOf(Main.getAfkBlockConfig().getConfig().getString("block_settings.original_block")).parseMaterial());
+
+        playerData.getPlayer().sendBlockChange(afkBlockModules.getBlockLocation(), blockstate.getBlockData());
     }
 
 }
