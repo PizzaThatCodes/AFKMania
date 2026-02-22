@@ -111,10 +111,10 @@ upgrades:
     purchase_commands:
       - "eco take %player% %upgrade_cost%"
     after_purchase_commands:
-      - "msg %player% &aUpgraded Fortune to level %next_upgrade_level%!"
+      - 'tellraw %player% {"text":"Upgraded Fortune to level %next_upgrade_level%!","color":"green"}'
       - "playsound minecraft:entity.player.levelup player %player%"
     maxed_commands:
-      - "msg %player% &cThis upgrade is already maxed."
+      - 'tellraw %player% {"text":"This upgrade is already maxed.","color":"red"}'
     proc_commands: []
 
   keyfinder:
@@ -134,9 +134,9 @@ upgrades:
     purchase_commands:
       - "eco take %player% %upgrade_cost%"
     after_purchase_commands:
-      - "msg %player% &aUpgraded Key Finder to level %next_upgrade_level%!"
+      - 'tellraw %player% {"text":"Upgraded Key Finder to level %next_upgrade_level%!","color":"green"}'
     maxed_commands:
-      - "msg %player% &cThis upgrade is already maxed."
+      - 'tellraw %player% {"text":"This upgrade is already maxed.","color":"red"}'
     proc_commands:
       - "cc give p minekey 1 %player%"
 
@@ -158,7 +158,7 @@ upgrades:
     purchase_commands:
       - "eco take %player% %upgrade_cost%"
     after_purchase_commands:
-      - "msg %player% &aUpgraded Haste to level %next_upgrade_level%!"
+      - 'tellraw %player% {"text":"Upgraded Haste to level %next_upgrade_level%!","color":"green"}'
     maxed_commands:
-      - "msg %player% &cThis upgrade is already maxed."
+      - 'tellraw %player% {"text":"This upgrade is already maxed.","color":"red"}'
     proc_commands: []
